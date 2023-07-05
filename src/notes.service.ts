@@ -10,5 +10,3 @@ export class NotesService {
     return `<h4>Hello ${name}</h4>`;
   }
 }
-
-const notesService = new NotesService();
