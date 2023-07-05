@@ -10,3 +10,5 @@ export const WRONG_NAME_ERROR = {
   code: HttpStatus.BAD_REQUEST,
   message: 'Wrong input name',
 };
+
+export const PARAM_NAME = 'name';

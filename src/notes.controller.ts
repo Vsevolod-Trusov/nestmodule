@@ -3,7 +3,12 @@ import { Response } from 'express';
 
 import { NotesService } from 'notes.service';
 
-import { BASE_URLS, URL_PREFIX, WRONG_NAME_ERROR } from './constants';
+import {
+  BASE_URLS,
+  URL_PREFIX,
+  WRONG_NAME_ERROR,
+  PARAM_NAME,
+} from './constants';
 
 @Controller(URL_PREFIX)
 export class NotesController {
@@ -11,7 +16,7 @@ export class NotesController {
 
   @Get(BASE_URLS.GREETINGS)
   getName(
-    @Param('name') name: string,
+    @Param(PARAM_NAME) name: string,
     @Res({ passthrough: true }) res: Response,
   ): Response {
     return name

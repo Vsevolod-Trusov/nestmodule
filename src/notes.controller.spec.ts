@@ -13,10 +13,4 @@ describe('NotesController', () => {
 
     notesController = app.get<NotesController>(NotesController);
   });
-
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(notesController.getHello()).toBe('Hello World!');
-    });
-  });
 });
