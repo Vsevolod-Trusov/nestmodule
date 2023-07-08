@@ -1,4 +1,4 @@
-import { CreateNoteDto } from "dto";
+import { CreateNoteDto } from 'dto';
 
 export const EMPTY_LINE = '';
 

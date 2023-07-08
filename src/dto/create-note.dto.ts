@@ -1,4 +1,4 @@
-import { IsOptional, Length, MinLength } from 'class-validator';
+import { IsOptional, Length, MinLength, IsNotEmpty } from 'class-validator';
 
 export class CreateNoteDto {
   @IsOptional()
@@ -7,6 +7,8 @@ export class CreateNoteDto {
   title: string;
   @Length(3, 500)
   content: string;
+  @IsNotEmpty()
   createdAt: Date;
-  updatedAt?: Date;
+  @IsOptional()
+  updatedAt: Date;
 }
