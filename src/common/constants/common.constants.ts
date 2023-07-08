@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { CreateNoteDto } from 'dto';
 
 export const EMPTY_LINE = '';
@@ -5,7 +7,7 @@ export const EMPTY_LINE = '';
 export const MOCKED_NOTES = [];
 
 export const MOCKED_NOTE: CreateNoteDto = {
-  id: EMPTY_LINE,
+  id: uuidv4(),
   title: EMPTY_LINE,
   content: EMPTY_LINE,
   createdAt: new Date(),
@@ -13,6 +15,6 @@ export const MOCKED_NOTE: CreateNoteDto = {
 };
 
 export const SUCCESS_DELETED = {
-  id: EMPTY_LINE,
+  _id: EMPTY_LINE,
   success: true,
 };

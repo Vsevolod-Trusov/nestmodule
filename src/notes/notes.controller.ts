@@ -14,10 +14,16 @@ import { Response } from 'express';
 import { NotesService } from 'notes/notes.service';
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
 import { BASE_URLS, URL_PREFIX, NOTES_PARAMETERS, MOCKED_NOTES } from 'common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Note } from 'entity';
+import { Model } from 'mongoose';
 
 @Controller(URL_PREFIX)
 export class NotesController {
-  constructor(private readonly notesService: NotesService) {}
+  constructor(
+    private readonly notesService: NotesService,
+    @InjectModel(Note.name) private noteModel: Model<Note>,
+  ) {}
 
   @Get(BASE_URLS.GREETINGS)
   getName(
@@ -38,10 +44,14 @@ export class NotesController {
   }
 
   @Post(BASE_URLS.NOTES)
-  insertNote(@Body() note: CreateNoteDto, @Res() response: Response): Response {
-    const createdNote = this.notesService.createNote(note);
-
-    return response.status(HttpStatus.OK).send(createdNote);
+  async insertNote(
+    @Body() note: CreateNoteDto,
+    @Res() response: Response,
+  ): Promise<Response> {
+    //const createdNote = await this.notesService.createNote(note);
+    const kek = new this.noteModel(note);
+    const lol = await kek.save();
+    return response.status(HttpStatus.OK).send(lol);
   }
 
   @Put(BASE_URLS.NOTES_BY_ID)

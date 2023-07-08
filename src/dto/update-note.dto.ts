@@ -2,7 +2,7 @@ import { Length, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class UpdateNoteDto {
   @IsNotEmpty()
-  id: string;
+  _id: string;
   @Length(3)
   title: string;
   @Length(3, 500)
