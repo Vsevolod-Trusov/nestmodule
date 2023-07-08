@@ -1,65 +1,36 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Response } from 'express';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
 import { RESPONSE_ERROR_MESSAGES, SUCCESS_DELETED } from 'common';
 
 @Injectable()
 export class NotesService {
-  getHello(): string {
-    return 'Hello World!';
-  }
-
-  getHelloWithName(response: Response, name: string): Response {
+  getHelloWithName(name: string): string {
     if (name) {
-      return response
-        .setHeader('Content-Type', 'text/html')
-        .status(HttpStatus.OK)
-        .send(`<h4>Hello ${name}</h4>`);
+      return `<h4>Hello ${name}</h4>`;
     } else {
-      throw new HttpException(
-        RESPONSE_ERROR_MESSAGES.WRONG_NAME_ERROR,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_NAME_ERROR);
     }
   }
 
-  createNote(response: Response, note: CreateNoteDto): Response {
-    const { title, content, createdAt } = note;
-
-    if (title && content && createdAt) {
-      return response.status(HttpStatus.OK).send(note);
-    } else {
-      throw new HttpException(
-        RESPONSE_ERROR_MESSAGES.WRONG_POST_NOTE,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+  createNote(note: CreateNoteDto): CreateNoteDto {
+    return note;
   }
 
-  updateNote(
-    response: Response,
-    updatedNote: UpdateNoteDto,
-    id: string,
-  ): Response {
+  updateNote(updatedNote: UpdateNoteDto, id: string): UpdateNoteDto {
     if (id) {
       updatedNote.id = id;
 
-      return response.status(HttpStatus.OK).send(updatedNote);
+      return updatedNote;
     } else {
-      throw new HttpException(
-        RESPONSE_ERROR_MESSAGES.WRONG_ID,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_ID);
     }
   }
 
-  deleteNote(response: Response, id: string): Response {
+  removeNote(id: string): object {
     SUCCESS_DELETED.id = id;
     SUCCESS_DELETED.success = !!id;
 
-    return id
-      ? response.status(HttpStatus.OK).send(SUCCESS_DELETED)
-      : response.status(HttpStatus.BAD_REQUEST).send(SUCCESS_DELETED);
+    return SUCCESS_DELETED;
   }
 }

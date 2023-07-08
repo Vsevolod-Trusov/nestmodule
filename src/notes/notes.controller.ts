@@ -24,7 +24,12 @@ export class NotesController {
     @Param(NOTES_PARAMETERS.NAME) name: string,
     @Res() response: Response,
   ): Response {
-    return this.notesService.getHelloWithName(response, name);
+    const responseMessage = this.notesService.getHelloWithName(name);
+
+    return response
+      .setHeader('Content-Type', 'text/html')
+      .status(HttpStatus.OK)
+      .send(responseMessage);
   }
 
   @Get(BASE_URLS.NOTES)
@@ -34,17 +39,21 @@ export class NotesController {
 
   @Post(BASE_URLS.NOTES)
   insertNote(@Body() note: CreateNoteDto, @Res() response: Response): Response {
-    return this.notesService.createNote(response, note);
+    const createdNote = this.notesService.createNote(note);
+
+    return response.status(HttpStatus.OK).send(createdNote);
   }
 
   @Put(BASE_URLS.NOTES_BY_ID)
   updateNote(
     @Param(NOTES_PARAMETERS.ID) id: string,
-    @Body() updatedNote: UpdateNoteDto,
+    @Body() note: UpdateNoteDto,
     @Res()
     response: Response,
   ): Response {
-    return this.notesService.updateNote(response, updatedNote, id);
+    const updatedNote = this.notesService.updateNote(note, id);
+
+    return response.status(HttpStatus.OK).send(updatedNote);
   }
 
   @Delete(BASE_URLS.NOTES_BY_ID)
@@ -53,6 +62,8 @@ export class NotesController {
     @Res()
     response: Response,
   ): Response {
-    return this.notesService.deleteNote(response, id);
+    const deletedNoteResponse = this.notesService.removeNote(id);
+
+    return response.status(HttpStatus.OK).send(deletedNoteResponse);
   }
 }
