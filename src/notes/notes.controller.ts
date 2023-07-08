@@ -13,9 +13,7 @@ import { Response } from 'express';
 
 import { NotesService } from 'notes/notes.service';
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
-import { NOTES_PARAMETERS } from 'common';
-
-import { BASE_URLS, URL_PREFIX, MOCKED_NOTES } from './constants';
+import { BASE_URLS, URL_PREFIX, NOTES_PARAMETERS, MOCKED_NOTES } from 'common';
 
 @Controller(URL_PREFIX)
 export class NotesController {

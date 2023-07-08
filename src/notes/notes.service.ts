@@ -2,8 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Response } from 'express';
 
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
-
-import { RESPONSE_ERROR_MESSAGES, SUCCESS_DELETED } from './constants';
+import { RESPONSE_ERROR_MESSAGES, SUCCESS_DELETED } from 'common';
 
 @Injectable()
 export class NotesService {
