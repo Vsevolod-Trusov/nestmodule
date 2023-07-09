@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { UpdateNoteDto, CreateNoteDto } from 'dto';
+import { UpdateNoteDto, CreateNoteDto, FilterPaginationDto } from 'dto';
 import { RESPONSE_ERROR_MESSAGES } from 'common';
 import { DataService, IRemovedNote } from 'types';
 import { Note } from 'entity';
@@ -17,7 +17,32 @@ export class NotesService {
     }
   }
 
-  async getNotes(): Promise<Note[]> {
+  async getNotes({
+    page,
+    limit,
+    name,
+    date,
+  }: FilterPaginationDto): Promise<Note[]> {
+    if (page && limit) {
+      if (name) {
+        return await this.dataService.notes.findByFilterUsingPagination(
+          { title: name },
+          page,
+          limit,
+        );
+      }
+
+      if (date) {
+        return await this.dataService.notes.findByFilterUsingPagination(
+          { createdAt: date },
+          page,
+          limit,
+        );
+      }
+
+      return await this.dataService.notes.findAllUsingPagination(page, limit);
+    }
+
     return await this.dataService.notes.findAll();
   }
 
@@ -26,14 +51,10 @@ export class NotesService {
   }
 
   async updateNote(updatedNote: UpdateNoteDto, id: string): Promise<Note> {
-    if (id) {
-      if (id !== updatedNote.id)
-        throw new BadRequestException(RESPONSE_ERROR_MESSAGES.ID_NOT_EQUALS);
+    if (id !== updatedNote.id)
+      throw new BadRequestException(RESPONSE_ERROR_MESSAGES.ID_NOT_EQUALS);
 
-      return await this.dataService.notes.update({ id: id }, updatedNote);
-    }
-
-    throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_ID);
+    return await this.dataService.notes.update({ id: id }, updatedNote);
   }
 
   async removeNote(id: string): Promise<IRemovedNote> {

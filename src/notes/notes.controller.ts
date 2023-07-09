@@ -7,23 +7,27 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 import { NotesService } from 'notes/notes.service';
-import { UpdateNoteDto, CreateNoteDto } from 'dto';
-import { BASE_URLS, URL_PREFIX, NOTES_PARAMETERS } from 'common';
+import {
+  NameDto,
+  UpdateNoteDto,
+  CreateNoteDto,
+  IdDto,
+  FilterPaginationDto,
+} from 'dto';
+import { BASE_URLS, URL_PREFIX } from 'common';
 
 @Controller(URL_PREFIX)
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
   @Get(BASE_URLS.GREETINGS)
-  getName(
-    @Param(NOTES_PARAMETERS.NAME) name: string,
-    @Res() response: Response,
-  ): Response {
+  getName(@Param() { name }: NameDto, @Res() response: Response): Response {
     const responseMessage = this.notesService.getHelloWithName(name);
 
     return response
@@ -33,8 +37,11 @@ export class NotesController {
   }
 
   @Get(BASE_URLS.NOTES)
-  async getNotes(@Res() response: Response): Promise<Response> {
-    const notes = await this.notesService.getNotes();
+  async getNotes(
+    @Query() parameters: FilterPaginationDto,
+    @Res() response: Response,
+  ): Promise<Response> {
+    const notes = await this.notesService.getNotes(parameters);
 
     return response.send(notes);
   }
@@ -51,7 +58,7 @@ export class NotesController {
 
   @Put(BASE_URLS.NOTES_BY_ID)
   async updateNote(
-    @Param(NOTES_PARAMETERS.ID) id: string,
+    @Param() { id }: IdDto,
     @Body() note: UpdateNoteDto,
     @Res()
     response: Response,
@@ -63,7 +70,7 @@ export class NotesController {
 
   @Delete(BASE_URLS.NOTES_BY_ID)
   async removeNote(
-    @Param(NOTES_PARAMETERS.ID) id: string,
+    @Param() { id }: IdDto,
     @Res()
     response: Response,
   ): Promise<Response> {
