@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
-import { RESPONSE_ERROR_MESSAGES, SUCCESS_DELETED } from 'common';
-import { IDataServices } from 'types';
+import { RESPONSE_ERROR_MESSAGES } from 'common';
+import { IDataServices, IRemovedNote } from 'types';
 import { Note } from 'entity';
 
 @Injectable()
@@ -17,24 +17,32 @@ export class NotesService {
     }
   }
 
-  createNote(note: CreateNoteDto): Promise<Note> {
-    return this.dataService.notes.create(note);
+  async getNotes(): Promise<Note[]> {
+    return await this.dataService.notes.findAll();
   }
 
-  updateNote(updatedNote: UpdateNoteDto, id: string): UpdateNoteDto {
+  async createNote(note: CreateNoteDto): Promise<Note> {
+    return await this.dataService.notes.create(note);
+  }
+
+  async updateNote(updatedNote: UpdateNoteDto, id: string): Promise<Note> {
     if (id) {
-      updatedNote._id = id;
 
-      return updatedNote;
-    } else {
-      throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_ID);
-    }
+      if (id !== updatedNote.id) 
+        throw new BadRequestException(RESPONSE_ERROR_MESSAGES.ID_NOT_EQUALS)
+
+      return await this.dataService.notes.update({id: id}, updatedNote);
+    } 
+
+    throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_ID);
   }
 
-  removeNote(id: string): object {
-    SUCCESS_DELETED._id = id;
-    SUCCESS_DELETED.success = !!id;
+  async removeNote(id: string): Promise<IRemovedNote> {
+    const deletedResult = await this.dataService.notes.deleteOne({id: id});
 
-    return SUCCESS_DELETED;
+    return  {
+      id: id,
+      success: !!deletedResult.deletedCount
+    };
   }
 }

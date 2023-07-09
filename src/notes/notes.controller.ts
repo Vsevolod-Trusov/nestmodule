@@ -14,16 +14,12 @@ import { Response } from 'express';
 import { NotesService } from 'notes/notes.service';
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
 import { BASE_URLS, URL_PREFIX, NOTES_PARAMETERS, MOCKED_NOTES } from 'common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Note } from 'entity';
-import { Model } from 'mongoose';
 
 @Controller(URL_PREFIX)
 export class NotesController {
   constructor(
-    private readonly notesService: NotesService,
-    @InjectModel(Note.name) private noteModel: Model<Note>,
-  ) {}
+    private readonly notesService: NotesService
+      ) {}
 
   @Get(BASE_URLS.GREETINGS)
   getName(
@@ -39,8 +35,10 @@ export class NotesController {
   }
 
   @Get(BASE_URLS.NOTES)
-  getNotes(@Res() response: Response): Response {
-    return response.status(HttpStatus.OK).send(MOCKED_NOTES);
+  async getNotes(@Res() response: Response): Promise<Response> {
+    const notes = await this.notesService.getNotes()
+
+    return response.send(notes) 
   }
 
   @Post(BASE_URLS.NOTES)
@@ -48,31 +46,30 @@ export class NotesController {
     @Body() note: CreateNoteDto,
     @Res() response: Response,
   ): Promise<Response> {
-    //const createdNote = await this.notesService.createNote(note);
-    const kek = new this.noteModel(note);
-    const lol = await kek.save();
-    return response.status(HttpStatus.OK).send(lol);
+    const createdNote = await this.notesService.createNote(note);
+
+    return response.status(HttpStatus.OK).send(createdNote);
   }
 
   @Put(BASE_URLS.NOTES_BY_ID)
-  updateNote(
+  async updateNote(
     @Param(NOTES_PARAMETERS.ID) id: string,
     @Body() note: UpdateNoteDto,
     @Res()
     response: Response,
-  ): Response {
-    const updatedNote = this.notesService.updateNote(note, id);
+  ): Promise<Response> {
+    const updatedNote = await this.notesService.updateNote(note, id);
 
     return response.status(HttpStatus.OK).send(updatedNote);
   }
 
   @Delete(BASE_URLS.NOTES_BY_ID)
-  removeNote(
+  async removeNote(
     @Param(NOTES_PARAMETERS.ID) id: string,
     @Res()
     response: Response,
-  ): Response {
-    const deletedNoteResponse = this.notesService.removeNote(id);
+  ): Promise<Response> {
+    const deletedNoteResponse = await this.notesService.removeNote(id);
 
     return response.status(HttpStatus.OK).send(deletedNoteResponse);
   }
