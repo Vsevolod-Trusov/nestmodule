@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
-import { IGenericRepository } from 'types';
+import { GenericRepository } from 'types';
 
 @Injectable()
-export class MongoGenericRepository<T> implements IGenericRepository<T> {
+export class MongoGenericRepository<T> implements GenericRepository<T> {
   private _repository: Model<T>;
 
   constructor(repository: Model<T>) {

@@ -4,10 +4,10 @@ import { Model } from 'mongoose';
 
 import { Note, NoteDocument } from 'entity';
 import { MongoGenericRepository } from 'repository';
-import { IDataServices } from 'types';
+import { DataService } from 'types';
 
 @Injectable()
-export class MongoDataService implements IDataServices, OnApplicationBootstrap {
+export class MongoDataService implements DataService, OnApplicationBootstrap {
   notes: MongoGenericRepository<NoteDocument>;
 
   constructor(

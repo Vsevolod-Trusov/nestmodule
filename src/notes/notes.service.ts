@@ -2,12 +2,12 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
 import { RESPONSE_ERROR_MESSAGES } from 'common';
-import { IDataServices, IRemovedNote } from 'types';
+import { DataService, IRemovedNote } from 'types';
 import { Note } from 'entity';
 
 @Injectable()
 export class NotesService {
-  constructor(private readonly dataService: IDataServices) {}
+  constructor(private readonly dataService: DataService) {}
 
   getHelloWithName(name: string): string {
     if (name) {

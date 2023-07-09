@@ -1,7 +1,7 @@
 import { Note } from 'entity';
 
-import { IGenericRepository } from './mongo-generic-repository.type';
+import { GenericRepository } from './mongo-generic-repository.type';
 
-export abstract class IDataServices {
-  abstract notes: IGenericRepository<Note>;
+export abstract class DataService {
+  abstract notes: GenericRepository<Note>;
 }

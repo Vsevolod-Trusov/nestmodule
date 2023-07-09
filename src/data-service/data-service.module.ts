@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { Note, NoteSchema } from 'entity';
-import { IDataServices } from 'types';
+import { DataService } from 'types';
 
 import { MongoDataService } from './mongo.data-service';
 
@@ -16,10 +16,10 @@ import { MongoDataService } from './mongo.data-service';
   ],
   providers: [
     {
-      provide: IDataServices,
+      provide: DataService,
       useClass: MongoDataService,
     },
   ],
-  exports: [IDataServices],
+  exports: [DataService],
 })
 export class MongoDataServiceModule {}

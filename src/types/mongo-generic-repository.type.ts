@@ -1,4 +1,4 @@
-export abstract class IGenericRepository<T> {
+export abstract class GenericRepository<T> {
   abstract findAll(): Promise<T[]>;
 
   abstract findOneByParameters(object: object): Promise<T>;
