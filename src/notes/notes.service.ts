@@ -44,12 +44,10 @@ export class NotesService {
     }
 
     if (name) {
-
       return await this.dataService.notes.findByFilter({ title: name });
     }
 
     if (date) {
-
       return await this.dataService.notes.findByFilter({ createdAt: date });
     }
 

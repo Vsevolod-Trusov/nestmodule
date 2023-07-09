@@ -23,8 +23,8 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     }
   }
 
-  async findByFilter(filter: object ): Promise<T[]> {
-    return await this._repository.find(filter)
+  async findByFilter(filter: object): Promise<T[]> {
+    return await this._repository.find(filter);
   }
 
   async findByFilterUsingPagination(

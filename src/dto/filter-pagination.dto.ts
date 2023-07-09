@@ -1,5 +1,12 @@
 import { Transform, TransformFnParams } from 'class-transformer';
-import { IsDate, IsInt, IsOptional, IsPositive, Length, MinDate } from 'class-validator';
+import {
+  IsDate,
+  IsInt,
+  IsOptional,
+  IsPositive,
+  Length,
+  MinDate,
+} from 'class-validator';
 import { MIN_DATE_VALUE, TASK_MIN_LENGTH } from 'common';
 
 export class FilterPaginationDto {
