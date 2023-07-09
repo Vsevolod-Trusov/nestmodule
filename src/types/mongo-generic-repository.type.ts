@@ -9,6 +9,8 @@ export abstract class GenericRepository<T> {
     limit: number,
   ): Promise<T[]>;
 
+  abstract findByFilter(filter: object ): Promise<T[]>;
+
   abstract create(item: T): Promise<T>;
 
   abstract update(filter: object, item: T);

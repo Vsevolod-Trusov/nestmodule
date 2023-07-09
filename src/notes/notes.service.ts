@@ -43,6 +43,16 @@ export class NotesService {
       return await this.dataService.notes.findAllUsingPagination(page, limit);
     }
 
+    if (name) {
+
+      return await this.dataService.notes.findByFilter({ title: name });
+    }
+
+    if (date) {
+      
+      return await this.dataService.notes.findByFilter({ createdAt: name });
+    }
+
     return await this.dataService.notes.findAll();
   }
 
