@@ -7,9 +7,10 @@ import {
   DatabaseConnectionCheckMiddleware,
 } from 'middleware';
 import { NotesModule } from 'notes/notes.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [NotesModule, MongoDataServiceModule],
+  imports: [NotesModule, MongoDataServiceModule, UsersModule],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
