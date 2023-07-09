@@ -49,8 +49,8 @@ export class NotesService {
     }
 
     if (date) {
-      
-      return await this.dataService.notes.findByFilter({ createdAt: name });
+
+      return await this.dataService.notes.findByFilter({ createdAt: date });
     }
 
     return await this.dataService.notes.findAll();
