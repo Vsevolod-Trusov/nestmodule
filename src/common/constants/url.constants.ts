@@ -5,3 +5,6 @@ export enum BASE_URLS {
   NOTES = '/notes',
   NOTES_BY_ID = '/notes/:id?',
 }
+
+export const ALL_ROUTES = '*';
+export const MIDDLEWARE_ROUTE = '/api/notes';
