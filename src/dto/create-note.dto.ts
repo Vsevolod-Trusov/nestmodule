@@ -1,14 +1,15 @@
-import { IsOptional, Length, MinLength, IsNotEmpty } from 'class-validator';
+import { IsOptional, Length, IsNotEmpty, IsUUID } from 'class-validator';
 
-import { UUID_LENGTH } from 'common';
+import { TASK_MAX_LENGTH, TASK_MIN_LENGTH, UUID_LENGTH } from 'common';
 
 export class CreateNoteDto {
   @IsOptional()
   @Length(UUID_LENGTH)
+  @IsUUID()
   id: string;
-  @MinLength(3)
+  @Length(TASK_MIN_LENGTH)
   title: string;
-  @Length(3, 500)
+  @Length(TASK_MIN_LENGTH, TASK_MAX_LENGTH)
   content: string;
   @IsNotEmpty()
   createdAt: Date;
