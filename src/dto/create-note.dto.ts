@@ -1,7 +1,7 @@
 import { Transform, TransformFnParams } from 'class-transformer';
-import { IsOptional, Length, IsNotEmpty, IsUUID, IsDate } from 'class-validator';
+import { IsOptional, Length, IsUUID, IsDate, MinDate } from 'class-validator';
 
-import { TASK_MAX_LENGTH, TASK_MIN_LENGTH, UUID_LENGTH } from 'common';
+import { MIN_DATE_VALUE, TASK_MAX_LENGTH, TASK_MIN_LENGTH, UUID_LENGTH } from 'common';
 
 export class CreateNoteDto {
   @IsOptional()
@@ -17,10 +17,12 @@ export class CreateNoteDto {
 
   @IsDate()
   @Transform(({ value }: TransformFnParams) => new Date(value))
+  @MinDate(new Date(MIN_DATE_VALUE))
   createdAt: Date;
 
   @IsOptional()
   @IsDate()
   @Transform(({ value }: TransformFnParams) => new Date(value))
+  @MinDate(new Date(MIN_DATE_VALUE))
   updatedAt: Date;
 }

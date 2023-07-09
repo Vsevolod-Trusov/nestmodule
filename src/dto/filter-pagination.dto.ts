@@ -1,6 +1,6 @@
 import { Transform, TransformFnParams } from 'class-transformer';
-import { IsDate, IsInt, IsOptional, IsPositive, Length } from 'class-validator';
-import { TASK_MIN_LENGTH } from 'common';
+import { IsDate, IsInt, IsOptional, IsPositive, Length, MinDate } from 'class-validator';
+import { MIN_DATE_VALUE, TASK_MIN_LENGTH } from 'common';
 
 export class FilterPaginationDto {
   @IsOptional()
@@ -22,5 +22,6 @@ export class FilterPaginationDto {
   @IsOptional()
   @IsDate()
   @Transform(({ value }: TransformFnParams) => new Date(value))
+  @MinDate(new Date(MIN_DATE_VALUE))
   date: Date;
 }
