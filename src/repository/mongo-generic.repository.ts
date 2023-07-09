@@ -27,11 +27,11 @@ export class MongoGenericRepository<T> implements IGenericRepository<T> {
     return await this._repository.create(item);
   }
 
-  async update(filter: object, item: T) {
-    return await this._repository.findOneAndUpdate(filter, item);
+  async update(filter: object, item: T): Promise<T> {
+    return await this._repository.findOneAndUpdate(filter, item, {new: true});
   }
 
   async deleteOne(filter: object) {
-    return await this._repository.deleteOne(filter);
+    return await this._repository.deleteOne(filter) ;
   }
 }
