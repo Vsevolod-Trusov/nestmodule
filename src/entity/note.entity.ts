@@ -5,10 +5,12 @@ export type NoteDocument = Note & Document;
 
 @Schema({
   toJSON: {
-  transform: function (doc, ret) {
-    delete ret._id;
-    delete ret.__v;
-  }}})
+    transform: function (doc, ret) {
+      delete ret._id;
+      delete ret.__v;
+    },
+  },
+})
 export class Note {
   @Prop({ type: String, default: () => uuidv4(), unique: true })
   id: string;

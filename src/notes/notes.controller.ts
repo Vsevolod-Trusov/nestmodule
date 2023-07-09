@@ -13,13 +13,11 @@ import { Response } from 'express';
 
 import { NotesService } from 'notes/notes.service';
 import { UpdateNoteDto, CreateNoteDto } from 'dto';
-import { BASE_URLS, URL_PREFIX, NOTES_PARAMETERS, MOCKED_NOTES } from 'common';
+import { BASE_URLS, URL_PREFIX, NOTES_PARAMETERS } from 'common';
 
 @Controller(URL_PREFIX)
 export class NotesController {
-  constructor(
-    private readonly notesService: NotesService
-      ) {}
+  constructor(private readonly notesService: NotesService) {}
 
   @Get(BASE_URLS.GREETINGS)
   getName(
@@ -36,9 +34,9 @@ export class NotesController {
 
   @Get(BASE_URLS.NOTES)
   async getNotes(@Res() response: Response): Promise<Response> {
-    const notes = await this.notesService.getNotes()
+    const notes = await this.notesService.getNotes();
 
-    return response.send(notes) 
+    return response.send(notes);
   }
 
   @Post(BASE_URLS.NOTES)
