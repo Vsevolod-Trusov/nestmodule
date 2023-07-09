@@ -4,7 +4,6 @@ import { Length, IsNotEmpty, IsOptional, IsUUID, IsDate } from 'class-validator'
 import { TASK_MAX_LENGTH, TASK_MIN_LENGTH, UUID_LENGTH } from 'common';
 
 export class UpdateNoteDto {
-  @IsNotEmpty()
   @Length(UUID_LENGTH)
   @IsUUID()
   id: string;
@@ -15,7 +14,6 @@ export class UpdateNoteDto {
   @Length(TASK_MIN_LENGTH, TASK_MAX_LENGTH)
   content: string;
   
-  @IsNotEmpty()
   @IsDate()
   @Transform(({ value }: TransformFnParams) => new Date(value))
   createdAt: Date;

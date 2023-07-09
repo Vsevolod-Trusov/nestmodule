@@ -15,7 +15,6 @@ export class CreateNoteDto {
   @Length(TASK_MIN_LENGTH, TASK_MAX_LENGTH)
   content: string;
 
-  @IsNotEmpty()
   @IsDate()
   @Transform(({ value }: TransformFnParams) => new Date(value))
   createdAt: Date;
