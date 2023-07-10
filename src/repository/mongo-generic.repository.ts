@@ -42,9 +42,8 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     return await this._repository.find(filter).limit(limit).skip(skip);
   }
 
-  
   async countItems(): Promise<number> {
-    return await this._repository.countDocuments()    
+    return await this._repository.countDocuments();
   }
 
   async create(item: T): Promise<T> {

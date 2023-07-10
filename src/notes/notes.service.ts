@@ -9,16 +9,13 @@ import { checkIsEven, concatStrings } from 'utils';
 
 @Injectable()
 export class NotesService {
+  readonly TEST_PREFIX = this.configService.get<string>(ENV.TEST);
+  readonly DEV_PREFIX = this.configService.get<string>(ENV.DEV);
 
-  readonly TEST_PREFIX = this.configService.get<string>(
-    ENV.TEST,
-  );
-  readonly DEV_PREFIX = this.configService.get<string>(
-    ENV.DEV,
-  );
-
-  constructor(private readonly dataService: DataService,
-    private configService: ConfigService) {}
+  constructor(
+    private readonly dataService: DataService,
+    private configService: ConfigService,
+  ) {}
 
   getHelloWithName(name: string): string {
     if (name) {
@@ -66,13 +63,14 @@ export class NotesService {
   }
 
   async createNote(note: CreateNoteDto): Promise<Note> {
+    const notesCount = await this.dataService.notes.countItems();
 
-    const notesCount = await this.dataService.notes.countItems()
+    const isEven = checkIsEven(notesCount);
+    const { title } = note;
 
-    const isEven = checkIsEven(notesCount)
-    const {title} = note
-
-    note.title = isEven ? concatStrings(this.TEST_PREFIX, title) : concatStrings(this.DEV_PREFIX, title)
+    note.title = isEven
+      ? concatStrings(this.TEST_PREFIX, title)
+      : concatStrings(this.DEV_PREFIX, title);
 
     return await this.dataService.notes.create(note);
   }

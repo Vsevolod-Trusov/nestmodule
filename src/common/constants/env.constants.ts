@@ -5,5 +5,5 @@ export const enum ENV {
   ACCESS_JWT_PERIOD = 'ACCESS_JWT_PERIOD',
   REFRESH_JWT_PERIOD = 'REFRESH_JWT_PERIOD',
   TEST = 'TEST',
-  DEV = 'DEV'
+  DEV = 'DEV',
 }
