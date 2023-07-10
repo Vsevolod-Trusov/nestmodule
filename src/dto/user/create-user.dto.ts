@@ -33,11 +33,11 @@ export class CreateUserDto {
   @IsDate()
   @Transform(({ value }: TransformFnParams) => new Date(value))
   @MinDate(new Date(MIN_DATE_VALUE))
-  birthday: string;
+  birthday: Date;
 
   @IsEmail()
   email: string;
 
   @IsOptional()
-  refreshToken: Date;
+  refreshToken: string;
 }
