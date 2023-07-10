@@ -29,7 +29,7 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
   }
 
   async findOneByFilter(filter: object): Promise<T> {
-    return await this._repository.findOne(filter)
+    return await this._repository.findOne(filter);
   }
 
   async findByFilterUsingPagination(

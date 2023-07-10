@@ -1,1 +1,2 @@
-export * from './mongo.utils'
+export * from './mongo.utils';
+export * from './auth.utils';
