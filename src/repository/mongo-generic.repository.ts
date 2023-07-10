@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 import { GenericRepository } from 'types';
+import { getSkipValue } from 'utils';
 
 @Injectable()
 export class MongoGenericRepository<T> implements GenericRepository<T> {
@@ -17,7 +18,7 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
 
   async findAllUsingPagination(page, limit): Promise<T[]> {
     if (page && limit) {
-      const skip = (page - 1) * limit;
+      const skip = getSkipValue(page, limit);
 
       return await this._repository.find().limit(limit).skip(skip);
     }
@@ -27,12 +28,16 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     return await this._repository.find(filter);
   }
 
+  async findOneByFilter(filter: object): Promise<T> {
+    return await this._repository.findOne(filter)
+  }
+
   async findByFilterUsingPagination(
     filter: object,
     page: number,
     limit: number,
   ): Promise<T[]> {
-    const skip = (page - 1) * limit;
+    const skip = getSkipValue(page, limit);
 
     return await this._repository.find(filter).limit(limit).skip(skip);
   }
