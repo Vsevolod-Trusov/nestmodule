@@ -9,6 +9,7 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -20,13 +21,14 @@ import {
   IdDto,
   FilterPaginationDto,
 } from 'dto';
-import { BASE_URLS, URL_PREFIX } from 'common';
+import { BASE_NOTES_URLS, URL_PREFIX } from 'common';
+import { JwtAuthGuard } from 'auth/guard/jwt.guard';
 
 @Controller(URL_PREFIX)
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
-  @Get(BASE_URLS.GREETINGS)
+  @Get(BASE_NOTES_URLS.GREETINGS)
   getName(@Param() { name }: NameDto, @Res() response: Response): Response {
     const responseMessage = this.notesService.getHelloWithName(name);
 
@@ -36,7 +38,8 @@ export class NotesController {
       .send(responseMessage);
   }
 
-  @Get(BASE_URLS.NOTES)
+  @UseGuards(JwtAuthGuard)
+  @Get(BASE_NOTES_URLS.NOTES)
   async getNotes(
     @Query() parameters: FilterPaginationDto,
     @Res() response: Response,
@@ -46,7 +49,8 @@ export class NotesController {
     return response.send(notes);
   }
 
-  @Post(BASE_URLS.NOTES)
+  @UseGuards(JwtAuthGuard)
+  @Post(BASE_NOTES_URLS.NOTES)
   async insertNote(
     @Body() note: CreateNoteDto,
     @Res() response: Response,
@@ -56,7 +60,8 @@ export class NotesController {
     return response.status(HttpStatus.OK).send(createdNote);
   }
 
-  @Put(BASE_URLS.NOTES_BY_ID)
+  @UseGuards(JwtAuthGuard)
+  @Put(BASE_NOTES_URLS.NOTES_BY_ID)
   async updateNote(
     @Param() { id }: IdDto,
     @Body() note: UpdateNoteDto,
@@ -68,7 +73,8 @@ export class NotesController {
     return response.status(HttpStatus.OK).send(updatedNote);
   }
 
-  @Delete(BASE_URLS.NOTES_BY_ID)
+  @UseGuards(JwtAuthGuard)
+  @Delete(BASE_NOTES_URLS.NOTES_BY_ID)
   async removeNote(
     @Param() { id }: IdDto,
     @Res()
