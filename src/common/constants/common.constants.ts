@@ -5,3 +5,5 @@ export const TASK_MAX_LENGTH = 500;
 export const PASSWORD_MAX_LENGTH = 2002;
 export const DATABASE_READY_STATE = 1;
 export const MIN_DATE_VALUE = '1970-01-01';
+export const ROUNDS_AMOUNT = 10;
+export const NULL_VALUE = null;
