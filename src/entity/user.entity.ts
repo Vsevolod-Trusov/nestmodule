@@ -27,8 +27,16 @@ export class User {
   @Prop({ required: true, type: Date })
   birthday: Date;
 
-  @Prop({ required: true, index: true, unique: true, validate: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/})
+  @Prop({
+    required: true,
+    index: true,
+    unique: true,
+    validate: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+  })
   email: string;
+
+  @Prop({ required: false, default: null })
+  refreshToken: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
