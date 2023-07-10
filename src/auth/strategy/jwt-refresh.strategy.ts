@@ -5,6 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 
 import { AUTHORIZATION_HEADER, BEARER, EMPTY_LINE, ENV } from 'common';
+import { JwtPayload } from 'types';
 
 @Injectable()
 export class RefreshJwtStrategy extends PassportStrategy(
@@ -19,7 +20,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
     });
   }
 
-  async validate(request: Request, payload: any) {
+  async validate(request: Request, payload: JwtPayload) {
     const refreshToken = request
       .get(AUTHORIZATION_HEADER)
       .replace(BEARER, EMPTY_LINE)
