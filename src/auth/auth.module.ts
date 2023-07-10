@@ -12,5 +12,6 @@ import { RefreshJwtStrategy } from './strategy/jwt-refresh.strategy';
   imports: [JwtModule.register({}), MongoDataServiceModule],
   controllers: [UsersController],
   providers: [AuthService, RefreshJwtStrategy, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}
