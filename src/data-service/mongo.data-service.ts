@@ -13,13 +13,13 @@ export class MongoDataService implements DataService, OnApplicationBootstrap {
 
   constructor(
     @InjectModel(Note.name)
-    private noteRepository: Model<NoteDocument>,
+    private note: Model<NoteDocument>,
     @InjectModel(User.name)
-    private userRepository: Model<UserDocument>,
+    private user: Model<UserDocument>,
   ) {}
 
   onApplicationBootstrap() {
-    this.notes = new MongoGenericRepository<NoteDocument>(this.noteRepository);
-    this.users = new MongoGenericRepository<UserDocument>(this.userRepository);
+    this.notes = new MongoGenericRepository<NoteDocument>(this.note);
+    this.users = new MongoGenericRepository<UserDocument>(this.user);
   }
 }
