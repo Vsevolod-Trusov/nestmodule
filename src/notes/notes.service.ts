@@ -1,13 +1,24 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { UpdateNoteDto, CreateNoteDto, FilterPaginationDto } from 'dto';
-import { RESPONSE_ERROR_MESSAGES } from 'common';
+import { ENV, RESPONSE_ERROR_MESSAGES } from 'common';
 import { DataService, IRemovedNote } from 'types';
 import { Note } from 'entity';
+import { checkIsEven, concatStrings } from 'utils';
 
 @Injectable()
 export class NotesService {
-  constructor(private readonly dataService: DataService) {}
+
+  readonly TEST_PREFIX = this.configService.get<string>(
+    ENV.TEST,
+  );
+  readonly DEV_PREFIX = this.configService.get<string>(
+    ENV.DEV,
+  );
+
+  constructor(private readonly dataService: DataService,
+    private configService: ConfigService) {}
 
   getHelloWithName(name: string): string {
     if (name) {
@@ -55,6 +66,14 @@ export class NotesService {
   }
 
   async createNote(note: CreateNoteDto): Promise<Note> {
+
+    const notesCount = await this.dataService.notes.countItems()
+
+    const isEven = checkIsEven(notesCount)
+    const {title} = note
+
+    note.title = isEven ? concatStrings(this.TEST_PREFIX, title) : concatStrings(this.DEV_PREFIX, title)
+
     return await this.dataService.notes.create(note);
   }
 

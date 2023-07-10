@@ -7,3 +7,5 @@ export const DATABASE_READY_STATE = 1;
 export const MIN_DATE_VALUE = '1970-01-01';
 export const ROUNDS_AMOUNT = 10;
 export const NULL_VALUE = null;
+export const DEVIDE_BASE = 2;
+export const ZERO_VALUE = 0;
