@@ -3,13 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Note, NoteDocument, User, UserDocument } from 'entity';
-import { MongoGenericRepository } from 'repository';
+import { MongoGenericRepository, UserRepository } from 'repository';
 import { DataService } from 'types';
 
 @Injectable()
 export class MongoDataService implements DataService, OnApplicationBootstrap {
   notes: MongoGenericRepository<NoteDocument>;
-  users: MongoGenericRepository<UserDocument>;
+  users: UserRepository;
 
   constructor(
     @InjectModel(Note.name)
@@ -20,6 +20,6 @@ export class MongoDataService implements DataService, OnApplicationBootstrap {
 
   onApplicationBootstrap() {
     this.notes = new MongoGenericRepository<NoteDocument>(this.note);
-    this.users = new MongoGenericRepository<UserDocument>(this.user);
+    this.users = new UserRepository(this.user);
   }
 }

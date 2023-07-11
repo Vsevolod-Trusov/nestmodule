@@ -42,9 +42,7 @@ export class AuthService {
     const { id, email, password } = createUserDto;
     const userId = id || uuidv4();
     createUserDto.id = userId;
-    const userExists = await this.dataService.users.findOneByFilter({
-      email: email,
-    });
+    const userExists = await this.dataService.users.findOneByEmail(email);
 
     if (userExists) {
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.SUCH_USER_EXISTS);
@@ -66,7 +64,7 @@ export class AuthService {
   async signIn(data: AuthDto) {
     const { email, password } = data;
 
-    const user = await this.dataService.users.findOneByFilter({ email: email });
+    const user = await this.dataService.users.findOneByEmail(email);
 
     if (!user)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
@@ -83,16 +81,14 @@ export class AuthService {
     return tokens;
   }
 
-  async logOut(userId: string) {
-    const user = await this.dataService.users.findOneByFilter({
-      email: userId,
-    });
+  async logOut(email: string) {
+    const user = await this.dataService.users.findOneByEmail(email);
 
     if (!user)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
 
     user.refreshToken = NULL_VALUE;
-    return await this.dataService.users.update({ email: userId }, user);
+    return await this.dataService.users.update({ email: email }, user);
   }
 
   async refreshTokens(userId: string, refreshToken: string) {

@@ -9,3 +9,6 @@ export const ROUNDS_AMOUNT = 10;
 export const NULL_VALUE = null;
 export const DEVIDE_BASE = 2;
 export const ZERO_VALUE = 0;
+export const EMAIL_FIELD = 'email';
+export const SUB_FIELD = 'sub';
+export const REFRESH_FIELD = 'refreshToken';

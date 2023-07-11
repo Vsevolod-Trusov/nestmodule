@@ -1,7 +1,13 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 
-import { BASE_USER_URLS, URL_PREFIX } from 'common';
+import {
+  BASE_USER_URLS,
+  EMAIL_FIELD,
+  REFRESH_FIELD,
+  SUB_FIELD,
+  URL_PREFIX,
+} from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
 import { AuthService } from 'auth/auth.service';
 import { JwtAuthGuard } from 'auth/guard/jwt.guard';
@@ -26,7 +32,7 @@ export class UsersController {
   logout(@Req() request: Request) {
     const { user } = request;
 
-    return this.authService.logOut(user['email']);
+    return this.authService.logOut(user[EMAIL_FIELD]);
   }
 
   @UseGuards(JwtRefreshGuard)
@@ -34,8 +40,8 @@ export class UsersController {
   refreshTokens(@Req() request: Request) {
     const { user } = request;
 
-    const userId = user['sub'];
-    const refreshToken = user['refreshToken'];
+    const userId = user[SUB_FIELD];
+    const refreshToken = user[REFRESH_FIELD];
 
     return this.authService.refreshTokens(userId, refreshToken);
   }
