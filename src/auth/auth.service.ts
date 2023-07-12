@@ -92,7 +92,7 @@ export class AuthService {
   }
 
   async refreshTokens(userId: string, refreshToken: string) {
-    const user = await this.dataService.users.findOneByFilter({ id: userId });
+    const user = await this.dataService.users.findOneById(userId);
 
     if (!user)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);

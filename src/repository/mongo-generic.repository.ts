@@ -5,10 +5,11 @@ import { GenericRepository } from 'types';
 import { getSkipValue } from 'utils';
 
 @Injectable()
-export class MongoGenericRepository<T> implements GenericRepository<T> {
+export class MongoGenericRepository<T> extends GenericRepository<T> {
   private _repository: Model<T>;
 
   constructor(repository: Model<T>) {
+    super();
     this._repository = repository;
   }
 
@@ -28,7 +29,7 @@ export class MongoGenericRepository<T> implements GenericRepository<T> {
     return await this._repository.find(filter);
   }
 
-  async findOneByFilter(filter: object): Promise<T> {
+  protected async findOneByFilter(filter: object): Promise<T> {
     return await this._repository.findOne(filter);
   }
 

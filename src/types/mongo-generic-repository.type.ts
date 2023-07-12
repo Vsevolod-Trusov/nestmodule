@@ -10,7 +10,7 @@ export abstract class GenericRepository<T> {
   ): Promise<T[]>;
 
   abstract findByFilter(filter: object): Promise<T[]>;
-  abstract findOneByFilter(filter: object): Promise<T>;
+  protected abstract findOneByFilter(filter: object): Promise<T>;
 
   abstract create(item: T): Promise<T>;
 

@@ -13,4 +13,8 @@ export class UserRepository extends MongoGenericRepository<User> {
   async findOneByEmail(email: string): Promise<User> {
     return await this.findOneByFilter({ email: email });
   }
+
+  async findOneById(id: string): Promise<User> {
+    return await this.findOneByFilter({ id: id });
+  }
 }
