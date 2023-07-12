@@ -12,3 +12,5 @@ export const ZERO_VALUE = 0;
 export const EMAIL_FIELD = 'email';
 export const SUB_FIELD = 'sub';
 export const REFRESH_FIELD = 'refreshToken';
+export const CLOSE_EVENT_NAME = 'close';
+export const HTTP_NAME = 'HTTP';
