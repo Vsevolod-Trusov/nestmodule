@@ -21,7 +21,7 @@ import {
   IdDto,
   FilterPaginationDto,
 } from 'dto';
-import { BASE_NOTES_URLS, URL_PREFIX } from 'common';
+import { BASE_NOTES_URLS, CONTENT_TYPE, CONTENT_TYPE_HTML, URL_PREFIX } from 'common';
 import { JwtAuthGuard } from 'auth/guard/jwt.guard';
 
 @Controller(URL_PREFIX)
@@ -33,7 +33,7 @@ export class NotesController {
     const responseMessage = this.notesService.getHelloWithName(name);
 
     return response
-      .setHeader('Content-Type', 'text/html')
+      .setHeader(CONTENT_TYPE, CONTENT_TYPE_HTML)
       .status(HttpStatus.OK)
       .send(responseMessage);
   }
