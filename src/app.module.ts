@@ -10,7 +10,6 @@ import { NotesModule } from 'notes/notes.module';
 import { UsersModule } from 'users/users.module';
 import { ConfigModule } from 'config/config.module';
 import { AuthModule } from 'auth/auth.module';
-import { UsersController } from 'users';
 
 @Module({
   imports: [

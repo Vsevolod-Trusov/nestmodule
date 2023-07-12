@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
+import { NULL_VALUE, TASK_MAX_LENGTH, TASK_MIN_LENGTH } from 'common';
+
 export type NoteDocument = Note & Document;
 
 @Schema({
@@ -15,16 +17,16 @@ export class Note {
   @Prop({ type: String, default: () => uuidv4(), unique: true })
   id: string;
 
-  @Prop({ required: true, minlength: 3 })
+  @Prop({ required: true, minlength: TASK_MIN_LENGTH })
   title: string;
 
-  @Prop({ required: true, minlength: 3, maxlength: 500 })
+  @Prop({ required: true, minlength: TASK_MIN_LENGTH, maxlength: TASK_MAX_LENGTH })
   content: string;
 
   @Prop({ required: true, type: Date })
   createdAt: Date;
 
-  @Prop({ required: true, type: Date })
+  @Prop({ type: Date, default: NULL_VALUE })
   updatedAt: Date;
 }
 

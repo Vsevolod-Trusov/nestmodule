@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
+import { EMAIL_VALIDATE_MASK, NULL_VALUE, TASK_MAX_LENGTH, TASK_MIN_LENGTH } from 'common';
+
 export type UserDocument = User & Document;
 
 @Schema({
@@ -15,13 +17,13 @@ export class User {
   @Prop({ type: String, default: () => uuidv4(), unique: true })
   id: string;
 
-  @Prop({ required: true, minlength: 3 })
+  @Prop({ required: true, minlength: TASK_MIN_LENGTH })
   firstname: string;
 
-  @Prop({ required: true, minlength: 3 })
+  @Prop({ required: true, minlength: TASK_MIN_LENGTH })
   lastname: string;
 
-  @Prop({ required: true, minlength: 8, maxlength: 100 })
+  @Prop({ required: true, minlength: TASK_MIN_LENGTH, maxlength: TASK_MAX_LENGTH })
   password: string;
 
   @Prop({ required: true, type: Date })
@@ -31,11 +33,11 @@ export class User {
     required: true,
     index: true,
     unique: true,
-    validate: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    validate: EMAIL_VALIDATE_MASK,
   })
   email: string;
 
-  @Prop({ required: false, default: null })
+  @Prop({ required: false, default: NULL_VALUE })
   refreshToken: string;
 }
 
