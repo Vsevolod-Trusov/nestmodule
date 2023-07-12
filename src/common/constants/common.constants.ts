@@ -14,4 +14,5 @@ export const SUB_FIELD = 'sub';
 export const REFRESH_FIELD = 'refreshToken';
 export const CLOSE_EVENT_NAME = 'close';
 export const HTTP_NAME = 'HTTP';
-export const EMAIL_VALIDATE_MASK = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+export const EMAIL_VALIDATE_MASK = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+export const ENV_PATH = '.env';

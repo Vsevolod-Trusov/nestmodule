@@ -1,7 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { EMAIL_VALIDATE_MASK, NULL_VALUE, TASK_MAX_LENGTH, TASK_MIN_LENGTH } from 'common';
+import {
+  EMAIL_VALIDATE_MASK,
+  NULL_VALUE,
+  TASK_MAX_LENGTH,
+  TASK_MIN_LENGTH,
+} from 'common';
 
 export type UserDocument = User & Document;
 
@@ -23,7 +28,11 @@ export class User {
   @Prop({ required: true, minlength: TASK_MIN_LENGTH })
   lastname: string;
 
-  @Prop({ required: true, minlength: TASK_MIN_LENGTH, maxlength: TASK_MAX_LENGTH })
+  @Prop({
+    required: true,
+    minlength: TASK_MIN_LENGTH,
+    maxlength: TASK_MAX_LENGTH,
+  })
   password: string;
 
   @Prop({ required: true, type: Date })

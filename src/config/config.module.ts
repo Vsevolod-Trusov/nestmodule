@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 
+import { ENV_PATH } from 'common';
+
 @Module({
   imports: [
     NestConfigModule.forRoot({
-      envFilePath: ['.env'],
+      envFilePath: [ENV_PATH],
       isGlobal: true,
     }),
   ],

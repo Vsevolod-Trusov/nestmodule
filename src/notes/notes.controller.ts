@@ -21,7 +21,12 @@ import {
   IdDto,
   FilterPaginationDto,
 } from 'dto';
-import { BASE_NOTES_URLS, CONTENT_TYPE, CONTENT_TYPE_HTML, URL_PREFIX } from 'common';
+import {
+  BASE_NOTES_URLS,
+  CONTENT_TYPE,
+  CONTENT_TYPE_HTML,
+  URL_PREFIX,
+} from 'common';
 import { JwtAuthGuard } from 'auth/guard/jwt.guard';
 
 @Controller(URL_PREFIX)

@@ -20,7 +20,11 @@ export class Note {
   @Prop({ required: true, minlength: TASK_MIN_LENGTH })
   title: string;
 
-  @Prop({ required: true, minlength: TASK_MIN_LENGTH, maxlength: TASK_MAX_LENGTH })
+  @Prop({
+    required: true,
+    minlength: TASK_MIN_LENGTH,
+    maxlength: TASK_MAX_LENGTH,
+  })
   content: string;
 
   @Prop({ required: true, type: Date })
