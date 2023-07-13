@@ -2,10 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { UpdateNoteDto, CreateNoteDto, FilterPaginationDto } from 'dto';
-import { ENV, RESPONSE_ERROR_MESSAGES } from 'common';
+import { DEFAULT_LIMIT_VALUE, ENV, RESPONSE_ERROR_MESSAGES, DEFAULT_PAGE_VALUE } from 'common';
 import { DataService, IRemovedNote } from 'types';
 import { Note } from 'entity';
 import { checkIsEven, concatStrings } from 'utils';
+import { FilterQuery } from 'mongoose';
 
 @Injectable()
 export class NotesService {
@@ -26,40 +27,23 @@ export class NotesService {
   }
 
   async getNotes({
-    page,
-    limit,
+    page = DEFAULT_PAGE_VALUE,
+    limit = DEFAULT_LIMIT_VALUE,
     name,
     date,
   }: FilterPaginationDto): Promise<Note[]> {
-    if (page && limit) {
-      if (name) {
-        return await this.dataService.notes.findByFilterUsingPagination(
-          { title: name },
-          page,
-          limit,
-        );
-      }
+    const filterQuery: FilterQuery<Note> = {
+      ...(name && { title: name }),
+      ...(date && { createdAt: date }),
+    };
 
-      if (date) {
-        return await this.dataService.notes.findByFilterUsingPagination(
-          { createdAt: date },
-          page,
-          limit,
-        );
-      }
+    const notes = await this.dataService.notes.findByFilterUsingPagination(
+      filterQuery,
+      page,
+      limit,
+    );
 
-      return await this.dataService.notes.findAllUsingPagination(page, limit);
-    }
-
-    if (name) {
-      return await this.dataService.notes.findByFilter({ title: name });
-    }
-
-    if (date) {
-      return await this.dataService.notes.findByFilter({ createdAt: date });
-    }
-
-    return await this.dataService.notes.findAll();
+    return notes;
   }
 
   async createNote(note: CreateNoteDto): Promise<Note> {

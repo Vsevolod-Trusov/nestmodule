@@ -1,22 +1,14 @@
+import { FilterQuery } from "mongoose";
+
 export abstract class GenericRepository<T> {
-  abstract findAll(): Promise<T[]>;
-
-  abstract findAllUsingPagination(page: number, limit: number): Promise<T[]>;
-
   abstract findByFilterUsingPagination(
-    filter: object,
+    filter: FilterQuery<T>,
     page: number,
     limit: number,
   ): Promise<T[]>;
-
-  abstract findByFilter(filter: object): Promise<T[]>;
-  protected abstract findOneByFilter(filter: object): Promise<T>;
-
+  protected abstract findOneByFilter(filter: FilterQuery<T>): Promise<T>;
   abstract create(item: T): Promise<T>;
-
   abstract countItems(): Promise<number>;
-
-  abstract update(filter: object, item: T);
-
+  abstract update(filter: FilterQuery<T>, item: T);
   abstract deleteOne(filter: object);
 }
