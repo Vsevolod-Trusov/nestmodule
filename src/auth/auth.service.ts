@@ -88,7 +88,7 @@ export class AuthService {
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
 
     user.refreshToken = NULL_VALUE;
-    return await this.dataService.users.update({ email: email }, user);
+    return await this.dataService.users.updateByEmail(email, user);
   }
 
   async refreshTokens(userId: string, refreshToken: string) {
@@ -122,7 +122,7 @@ export class AuthService {
     const { refreshToken } = userDto;
     const hashedRefreshToken = await hashData(refreshToken, ROUNDS_AMOUNT);
     userDto.refreshToken = hashedRefreshToken;
-    await this.dataService.users.update({ id: userId }, userDto);
+    await this.dataService.users.updateById(userId, userDto);
   }
 
   async getTokens(userId: string, email: string) {

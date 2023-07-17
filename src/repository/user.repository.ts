@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 import { User } from 'entity';
@@ -16,5 +16,19 @@ export class UserRepository extends MongoGenericRepository<User> {
 
   async findOneById(id: string): Promise<User> {
     return await this.findOneByFilter({ id: id });
+  }
+
+  async updateById(
+    id: string,
+    userToUpdate,
+  ): Promise<User | NotFoundException> {
+    return await this.update({ id: id }, userToUpdate);
+  }
+
+  async updateByEmail(
+    email: string,
+    userToUpdate,
+  ): Promise<User | NotFoundException> {
+    return await this.update({ email: email }, userToUpdate);
   }
 }

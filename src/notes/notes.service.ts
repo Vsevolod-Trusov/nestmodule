@@ -74,7 +74,10 @@ export class NotesService {
     });
   }
 
-  async updateNote(updatedNote: UpdateNoteDto, id: string): Promise<Note> {
+  async updateNote(
+    updatedNote: UpdateNoteDto,
+    id: string,
+  ): Promise<Note | NotFoundException> {
     if (id !== updatedNote.id)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.ID_NOT_EQUALS);
 
@@ -82,10 +85,10 @@ export class NotesService {
 
     const updatedDate = getCurrentDate();
 
-    const updated = await this.dataService.notes.update(
-      { id: id },
-      { ...note, updatedAt: updatedDate },
-    );
+    const updated = await this.dataService.notes.updateById(id, {
+      ...note,
+      updatedAt: updatedDate,
+    });
 
     return (
       updated || new NotFoundException(RESPONSE_ERROR_MESSAGES.NO_SUCH_NOTE)
@@ -93,7 +96,7 @@ export class NotesService {
   }
 
   async removeNote(id: string): Promise<IRemovedNote> {
-    const deletedResult = await this.dataService.notes.deleteOne({ id: id });
+    const deletedResult = await this.dataService.notes.deleteOneById(id);
 
     return {
       id: id,

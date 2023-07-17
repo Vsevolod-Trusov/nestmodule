@@ -35,11 +35,11 @@ export class MongoGenericRepository<T> extends GenericRepository<T> {
     return await this._repository.create(item);
   }
 
-  async update(filter: FilterQuery<T>, item: T): Promise<T> {
+  protected async update(filter: FilterQuery<T>, item: T): Promise<T> {
     return await this._repository.findOneAndUpdate(filter, item, { new: true });
   }
 
-  async deleteOne(filter: object) {
+  protected async deleteOne(filter: object) {
     return await this._repository.deleteOne(filter);
   }
 }
