@@ -6,4 +6,5 @@ export const enum RESPONSE_ERROR_MESSAGES {
   USER_NOT_EXIST = 'User does not exist',
   WRONG_PASSWORD = 'Password is incorrect',
   REQUEST_DENIED = 'Access Denied',
+  NO_SUCH_NOTE = 'No such note',
 }

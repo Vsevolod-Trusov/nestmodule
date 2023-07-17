@@ -1,11 +1,20 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { UpdateNoteDto, CreateNoteDto, FilterPaginationDto } from 'dto';
-import { DEFAULT_LIMIT_VALUE, ENV, RESPONSE_ERROR_MESSAGES, DEFAULT_PAGE_VALUE } from 'common';
+import {
+  DEFAULT_LIMIT_VALUE,
+  ENV,
+  RESPONSE_ERROR_MESSAGES,
+  DEFAULT_PAGE_VALUE,
+} from 'common';
 import { DataService, IRemovedNote } from 'types';
 import { Note } from 'entity';
-import { checkIsEven, concatStrings } from 'utils';
+import { checkIsEven, concatStrings, getCurrentDate } from 'utils';
 import { FilterQuery } from 'mongoose';
 
 @Injectable()
@@ -50,20 +59,37 @@ export class NotesService {
     const notesCount = await this.dataService.notes.countItems();
 
     const isEven = checkIsEven(notesCount);
-    const { title } = note;
+    const { updatedAt, ...creatingNote } = note;
+    const { title } = creatingNote;
 
-    note.title = isEven
+    creatingNote.title = isEven
       ? concatStrings(this.TEST_PREFIX, title)
       : concatStrings(this.DEV_PREFIX, title);
 
-    return await this.dataService.notes.create(note);
+    const creationDate = getCurrentDate();
+
+    return await this.dataService.notes.create({
+      ...creatingNote,
+      createdAt: creationDate,
+    });
   }
 
   async updateNote(updatedNote: UpdateNoteDto, id: string): Promise<Note> {
     if (id !== updatedNote.id)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.ID_NOT_EQUALS);
 
-    return await this.dataService.notes.update({ id: id }, updatedNote);
+    const { createdAt, ...note } = updatedNote;
+
+    const updatedDate = getCurrentDate();
+
+    const updated = await this.dataService.notes.update(
+      { id: id },
+      { ...note, updatedAt: updatedDate },
+    );
+
+    return (
+      updated || new NotFoundException(RESPONSE_ERROR_MESSAGES.NO_SUCH_NOTE)
+    );
   }
 
   async removeNote(id: string): Promise<IRemovedNote> {

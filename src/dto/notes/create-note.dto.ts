@@ -20,6 +20,7 @@ export class CreateNoteDto {
   @Length(TASK_MIN_LENGTH, TASK_MAX_LENGTH)
   content: string;
 
+  @IsOptional()
   @IsDate()
   @Transform(({ value }: TransformFnParams) => new Date(value))
   @MinDate(new Date(MIN_DATE_VALUE))

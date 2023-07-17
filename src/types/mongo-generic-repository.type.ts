@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery } from 'mongoose';
 
 export abstract class GenericRepository<T> {
   abstract findByFilterUsingPagination(

@@ -28,10 +28,10 @@ export class Note {
   content: string;
 
   @Prop({ required: true, type: Date })
-  createdAt: Date;
+  createdAt?: Date;
 
-  @Prop({ type: Date, default: NULL_VALUE })
-  updatedAt: Date;
+  @Prop({ required: false, type: Date, default: NULL_VALUE })
+  updatedAt?: Date;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);
