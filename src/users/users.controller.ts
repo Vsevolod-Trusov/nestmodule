@@ -5,13 +5,14 @@ import {
   BASE_USER_URLS,
   EMAIL_FIELD,
   REFRESH_FIELD,
+  ROLES,
   SUB_FIELD,
   URL_PREFIX,
 } from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
 import { AuthService } from 'auth/auth.service';
-import { JwtAuthGuard } from 'auth/guard/jwt.guard';
-import { JwtRefreshGuard } from 'auth/guard/jwt-refresh.guard';
+import { RoleGuard, JwtAuthGuard, JwtRefreshGuard } from 'auth/guard';
+import { Roles } from 'auth/role.decorator';
 
 @Controller(URL_PREFIX)
 export class UsersController {
@@ -27,7 +28,8 @@ export class UsersController {
     return this.authService.signIn(authDate);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(ROLES.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(BASE_USER_URLS.LOG_OUT)
   logout(@Req() request: Request) {
     const { user } = request;
@@ -35,7 +37,8 @@ export class UsersController {
     return this.authService.logOut(user[EMAIL_FIELD]);
   }
 
-  @UseGuards(JwtRefreshGuard)
+  @Roles(ROLES.USER)
+  @UseGuards(JwtRefreshGuard, RoleGuard)
   @Get(BASE_USER_URLS.REFRESH)
   refreshTokens(@Req() request: Request) {
     const { user } = request;

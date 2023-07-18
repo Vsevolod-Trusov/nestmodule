@@ -6,6 +6,8 @@ import {
   IsDate,
   MinDate,
   IsEmail,
+  IsNotEmpty,
+  IsEnum,
 } from 'class-validator';
 
 import {
@@ -13,6 +15,7 @@ import {
   TASK_MIN_LENGTH,
   UUID_LENGTH,
   PASSWORD_MAX_LENGTH,
+  ROLES,
 } from 'common';
 
 export class CreateUserDto {
@@ -37,6 +40,10 @@ export class CreateUserDto {
 
   @IsEmail()
   email: string;
+
+  @IsEnum(ROLES)
+  @IsNotEmpty()
+  role: string;
 
   @IsOptional()
   refreshToken: string;

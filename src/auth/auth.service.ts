@@ -39,7 +39,7 @@ export class AuthService {
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
-    const { id, email, password } = createUserDto;
+    const { id, email, password, role } = createUserDto;
     const userId = id || uuidv4();
     createUserDto.id = userId;
     const userExists = await this.dataService.users.findOneByEmail(email);
@@ -53,7 +53,7 @@ export class AuthService {
       ...createUserDto,
       password: hash,
     });
-    const tokens = await this.getTokens(userId, email);
+    const tokens = await this.getTokens(userId, email, role);
 
     createdUser.refreshToken = tokens.refreshToken;
     await this.updateRefreshToken(userId, createdUser);
@@ -74,7 +74,7 @@ export class AuthService {
     if (!passwordMatches)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_PASSWORD);
 
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id, user.email, user.role);
     user.refreshToken = tokens.refreshToken;
 
     await this.updateRefreshToken(user.id, user);
@@ -97,7 +97,7 @@ export class AuthService {
     if (!user)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
 
-    const { id, refreshToken: userRefreshToken, email } = user;
+    const { id, refreshToken: userRefreshToken, email, role } = user;
 
     if (!id || !userRefreshToken)
       throw new ForbiddenException(RESPONSE_ERROR_MESSAGES.REQUEST_DENIED);
@@ -110,7 +110,7 @@ export class AuthService {
     if (!refreshTokenMatches)
       throw new ForbiddenException(RESPONSE_ERROR_MESSAGES.REQUEST_DENIED);
 
-    const tokens = await this.getTokens(id, email);
+    const tokens = await this.getTokens(id, email, role);
     user.refreshToken = tokens.refreshToken;
 
     await this.updateRefreshToken(id, user);
@@ -125,12 +125,13 @@ export class AuthService {
     await this.dataService.users.updateById(userId, userDto);
   }
 
-  async getTokens(userId: string, email: string) {
+  async getTokens(userId: string, email: string, role: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
           sub: userId,
           email,
+          role,
         },
         {
           secret: this.ACCESS_TOKEN_SECRET,
@@ -141,6 +142,7 @@ export class AuthService {
         {
           sub: userId,
           email,
+          role,
         },
         {
           secret: this.REFRESH_TOKEN_SECRET,

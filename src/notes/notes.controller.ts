@@ -25,9 +25,11 @@ import {
   BASE_NOTES_URLS,
   CONTENT_TYPE,
   CONTENT_TYPE_HTML,
+  ROLES,
   URL_PREFIX,
 } from 'common';
-import { JwtAuthGuard } from 'auth/guard/jwt.guard';
+import { JwtAuthGuard, RoleGuard } from 'auth/guard';
+import { Roles } from 'auth/role.decorator';
 
 @Controller(URL_PREFIX)
 export class NotesController {
@@ -43,7 +45,8 @@ export class NotesController {
       .send(responseMessage);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(ROLES.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(BASE_NOTES_URLS.NOTES)
   async getNotes(
     @Query() parameters: FilterPaginationDto,
@@ -54,7 +57,8 @@ export class NotesController {
     return response.send(notes);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(ROLES.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Post(BASE_NOTES_URLS.NOTES)
   async insertNote(
     @Body() note: CreateNoteDto,
@@ -65,7 +69,8 @@ export class NotesController {
     return response.status(HttpStatus.OK).send(createdNote);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(ROLES.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Put(BASE_NOTES_URLS.NOTES_BY_ID)
   async updateNote(
     @Param() { id }: IdDto,
@@ -78,7 +83,8 @@ export class NotesController {
     return response.status(HttpStatus.OK).send(updatedNote);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(ROLES.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(BASE_NOTES_URLS.NOTES_BY_ID)
   async removeNote(
     @Param() { id }: IdDto,

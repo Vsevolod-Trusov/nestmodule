@@ -16,3 +16,6 @@ export const CLOSE_EVENT_NAME = 'close';
 export const HTTP_NAME = 'HTTP';
 export const EMAIL_VALIDATE_MASK = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const ENV_PATH = '.env';
+export enum ROLES {
+  USER = 'user',
+}
