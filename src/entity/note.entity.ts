@@ -30,7 +30,7 @@ export class Note {
   @Prop({ required: true, type: Date })
   createdAt?: Date;
 
-  @Prop({ required: false, type: Date, default: NULL_VALUE })
+  @Prop({ required: false, type: Date })
   updatedAt?: Date;
 }
 
