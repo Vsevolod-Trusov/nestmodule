@@ -82,16 +82,7 @@ export class AuthService {
     if (!user)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
 
-    const {
-      refreshToken,
-      id,
-      firstname,
-      lastname,
-      email,
-      password,
-      birthday,
-      role,
-    } = user;
+    const { id, firstname, lastname, email, password, birthday, role } = user;
 
     const replacedUser = {
       id,
