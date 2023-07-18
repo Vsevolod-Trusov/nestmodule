@@ -7,4 +7,5 @@ export const enum RESPONSE_ERROR_MESSAGES {
   WRONG_PASSWORD = 'Password is incorrect',
   REQUEST_DENIED = 'Access Denied',
   NO_SUCH_NOTE = 'No such note',
+  INTERNAL_SERVER_ERROR = 'Internal server error',
 }
