@@ -4,6 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { FilterQuery } from 'mongoose';
+import { escapeRegExp } from 'lodash';
 
 import { UpdateNoteDto, CreateNoteDto, FilterPaginationDto } from 'dto';
 import {
@@ -15,7 +17,6 @@ import {
 import { DataService, IRemovedNote } from 'types';
 import { Note } from 'entity';
 import { checkIsEven, concatStrings, getCurrentDate } from 'utils';
-import { FilterQuery } from 'mongoose';
 
 @Injectable()
 export class NotesService {
@@ -41,8 +42,9 @@ export class NotesService {
     name,
     date,
   }: FilterPaginationDto): Promise<Note[]> {
+    const titleExpression = new RegExp(escapeRegExp(name), 'i');
     const filterQuery: FilterQuery<Note> = {
-      ...(name && { title: name }),
+      ...(name && { title: titleExpression }),
       ...(date && { createdAt: date }),
     };
 

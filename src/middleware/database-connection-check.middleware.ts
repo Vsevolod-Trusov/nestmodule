@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { Request, Response } from 'express';
 
 import { DATABASE_READY_STATE, RESPONSE_ERROR_MESSAGES } from 'common';
 
@@ -12,7 +13,7 @@ import { DATABASE_READY_STATE, RESPONSE_ERROR_MESSAGES } from 'common';
 export class DatabaseConnectionCheckMiddleware implements NestMiddleware {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
-  use(next: () => void) {
+  use(request: Request, response: Response, next: () => void) {
     const isConnectionReady =
       this.connection.readyState === DATABASE_READY_STATE;
 
