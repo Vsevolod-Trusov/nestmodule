@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { NULL_VALUE, TASK_MAX_LENGTH, TASK_MIN_LENGTH } from 'common';
+import { TASK_MAX_LENGTH, TASK_MIN_LENGTH } from 'common';
 
 export type NoteDocument = Note & Document;
 

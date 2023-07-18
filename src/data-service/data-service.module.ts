@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { Note, NoteSchema, User, UserSchema } from 'entity';
 import { DataService } from 'types';
 import { ENV } from 'common';
+
 import { MongoDataService } from './mongo.data-service';
 
 @Global()
