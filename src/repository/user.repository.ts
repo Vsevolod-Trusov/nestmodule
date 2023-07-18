@@ -25,6 +25,13 @@ export class UserRepository extends MongoGenericRepository<User> {
     return await this.update({ id: id }, userToUpdate);
   }
 
+  async replaceByEmail(
+    email: string,
+    userToReplace,
+  ): Promise<User | NotFoundException> {
+    return await this.replaceOneByFilter({ email: email }, userToReplace);
+  }
+
   async updateByEmail(
     email: string,
     userToUpdate,

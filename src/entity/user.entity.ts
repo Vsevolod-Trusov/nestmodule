@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   EMAIL_VALIDATE_MASK,
-  NULL_VALUE,
   ROLES,
   TASK_MAX_LENGTH,
   TASK_MIN_LENGTH,
@@ -50,8 +49,8 @@ export class User {
   @Prop({ required: true, enum: ROLES })
   role: string;
 
-  @Prop({ required: false, default: NULL_VALUE })
-  refreshToken: string;
+  @Prop({ required: false })
+  refreshToken?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -7,12 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  ENV,
-  NULL_VALUE,
-  RESPONSE_ERROR_MESSAGES,
-  ROUNDS_AMOUNT,
-} from 'common';
+import { ENV, RESPONSE_ERROR_MESSAGES, ROUNDS_AMOUNT } from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
 import { DataService } from 'types';
 import { compareHashes, hashData } from 'utils';
@@ -81,14 +76,33 @@ export class AuthService {
     return tokens;
   }
 
-  async logOut(email: string) {
-    const user = await this.dataService.users.findOneByEmail(email);
+  async logOut(searchEmail: string) {
+    const user = await this.dataService.users.findOneByEmail(searchEmail);
 
     if (!user)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
 
-    user.refreshToken = NULL_VALUE;
-    return await this.dataService.users.updateByEmail(email, user);
+    const {
+      refreshToken,
+      id,
+      firstname,
+      lastname,
+      email,
+      password,
+      birthday,
+      role,
+    } = user;
+
+    const replacedUser = {
+      id,
+      firstname,
+      lastname,
+      email,
+      password,
+      birthday,
+      role,
+    };
+    return await this.dataService.users.replaceByEmail(email, replacedUser);
   }
 
   async refreshTokens(userId: string, refreshToken: string) {

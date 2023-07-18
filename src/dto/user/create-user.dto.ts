@@ -46,5 +46,5 @@ export class CreateUserDto {
   role: string;
 
   @IsOptional()
-  refreshToken: string;
+  refreshToken?: string;
 }
