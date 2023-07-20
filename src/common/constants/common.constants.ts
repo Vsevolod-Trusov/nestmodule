@@ -19,3 +19,7 @@ export const ENV_PATH = '.env';
 export enum ROLES {
   USER = 'user',
 }
+export const SUCCASSFULLY_LOGOUT = 'Log out successfully';
+export enum COOKIES_HEADERS {
+  REFRESH = 'refreshToken',
+}

@@ -11,10 +11,11 @@ import { Request, Response } from 'express';
 
 import {
   BASE_USER_URLS,
-  EMAIL_FIELD,
+  COOKIES_HEADERS,
   REFRESH_FIELD,
   ROLES,
   SUB_FIELD,
+  SUCCASSFULLY_LOGOUT,
   URL_PREFIX,
 } from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
@@ -39,9 +40,9 @@ export class UsersController {
   @Roles(ROLES.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(BASE_USER_URLS.LOG_OUT)
-  logout(@Req() request: Request, @Res() response: Response): Response {
-    response.clearCookie('refreshToken');
-    return response.send('Log out successfully');
+  logout(@Res() response: Response): Response {
+    response.clearCookie(COOKIES_HEADERS.REFRESH);
+    return response.send(SUCCASSFULLY_LOGOUT);
   }
 
   @Roles(ROLES.USER)

@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
@@ -44,7 +40,7 @@ export class AuthService {
     }
 
     const hash: string = await hashData(password, ROUNDS_AMOUNT);
-    const createdUser = await this.dataService.users.create({
+    await this.dataService.users.create({
       ...createUserDto,
       password: hash,
     });
