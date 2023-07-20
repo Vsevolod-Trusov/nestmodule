@@ -44,7 +44,4 @@ export class CreateUserDto {
   @IsEnum(ROLES)
   @IsNotEmpty()
   role: string;
-
-  @IsOptional()
-  refreshToken?: string;
 }

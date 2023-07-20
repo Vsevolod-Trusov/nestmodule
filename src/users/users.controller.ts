@@ -1,5 +1,13 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
 
 import {
   BASE_USER_URLS,
@@ -31,10 +39,9 @@ export class UsersController {
   @Roles(ROLES.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(BASE_USER_URLS.LOG_OUT)
-  logout(@Req() request: Request) {
-    const { user } = request;
-
-    return this.authService.logOut(user[EMAIL_FIELD]);
+  logout(@Req() request: Request, @Res() response: Response): Response {
+    response.clearCookie('refreshToken');
+    return response.send('Log out successfully');
   }
 
   @Roles(ROLES.USER)

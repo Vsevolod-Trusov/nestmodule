@@ -50,9 +50,6 @@ export class AuthService {
     });
     const tokens = await this.getTokens(userId, email, role);
 
-    createdUser.refreshToken = tokens.refreshToken;
-    await this.updateRefreshToken(userId, createdUser);
-
     return tokens;
   }
 
@@ -70,30 +67,8 @@ export class AuthService {
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_PASSWORD);
 
     const tokens = await this.getTokens(user.id, user.email, user.role);
-    user.refreshToken = tokens.refreshToken;
 
-    await this.updateRefreshToken(user.id, user);
     return tokens;
-  }
-
-  async logOut(searchEmail: string) {
-    const user = await this.dataService.users.findOneByEmail(searchEmail);
-
-    if (!user)
-      throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
-
-    const { id, firstname, lastname, email, password, birthday, role } = user;
-
-    const replacedUser = {
-      id,
-      firstname,
-      lastname,
-      email,
-      password,
-      birthday,
-      role,
-    };
-    return await this.dataService.users.replaceByEmail(email, replacedUser);
   }
 
   async refreshTokens(userId: string, refreshToken: string) {
@@ -102,32 +77,11 @@ export class AuthService {
     if (!user)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.USER_NOT_EXIST);
 
-    const { id, refreshToken: userRefreshToken, email, role } = user;
-
-    if (!id || !userRefreshToken)
-      throw new ForbiddenException(RESPONSE_ERROR_MESSAGES.REQUEST_DENIED);
-
-    const refreshTokenMatches = await compareHashes(
-      refreshToken,
-      userRefreshToken,
-    );
-
-    if (!refreshTokenMatches)
-      throw new ForbiddenException(RESPONSE_ERROR_MESSAGES.REQUEST_DENIED);
+    const { id, email, role } = user;
 
     const tokens = await this.getTokens(id, email, role);
-    user.refreshToken = tokens.refreshToken;
-
-    await this.updateRefreshToken(id, user);
 
     return tokens;
-  }
-
-  async updateRefreshToken(userId: string, userDto: CreateUserDto) {
-    const { refreshToken } = userDto;
-    const hashedRefreshToken = await hashData(refreshToken, ROUNDS_AMOUNT);
-    userDto.refreshToken = hashedRefreshToken;
-    await this.dataService.users.updateById(userId, userDto);
   }
 
   async getTokens(userId: string, email: string, role: string) {
