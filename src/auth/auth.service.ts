@@ -3,7 +3,11 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ENV, RESPONSE_ERROR_MESSAGES, ROUNDS_AMOUNT } from 'common';
+import {
+  ENV_VARIABLE_NAMES,
+  RESPONSE_ERROR_MESSAGES,
+  ROUNDS_AMOUNT,
+} from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
 import { DataService } from 'types';
 import { compareHashes, hashData } from 'utils';
@@ -11,16 +15,16 @@ import { compareHashes, hashData } from 'utils';
 @Injectable()
 export class AuthService {
   readonly ACCESS_TOKEN_SECRET = this.configService.get<string>(
-    ENV.ACCESS_JWT_SECRET,
+    ENV_VARIABLE_NAMES.ACCESS_JWT_SECRET,
   );
   readonly REFRESH_TOKEN_SECRET = this.configService.get<string>(
-    ENV.REFRESH_JWT_SECRET,
+    ENV_VARIABLE_NAMES.REFRESH_JWT_SECRET,
   );
   readonly ACCESS_EXPIRED_PERIOD = this.configService.get<string>(
-    ENV.ACCESS_JWT_PERIOD,
+    ENV_VARIABLE_NAMES.ACCESS_JWT_PERIOD,
   );
   readonly REFRESH_EXPIRED_PERIOD = this.configService.get<string>(
-    ENV.REFRESH_JWT_PERIOD,
+    ENV_VARIABLE_NAMES.REFRESH_JWT_PERIOD,
   );
 
   constructor(
@@ -33,9 +37,9 @@ export class AuthService {
     const { id, email, password, role } = createUserDto;
     const userId = id || uuidv4();
     createUserDto.id = userId;
-    const userExists = await this.dataService.users.findOneByEmail(email);
+    const user = await this.dataService.users.findOneByEmail(email);
 
-    if (userExists) {
+    if (user) {
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.SUCH_USER_EXISTS);
     }
 

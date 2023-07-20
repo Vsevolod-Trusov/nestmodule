@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   Post,
@@ -14,13 +15,7 @@ import {
 import { Response } from 'express';
 
 import { NotesService } from 'notes/notes.service';
-import {
-  NameDto,
-  UpdateNoteDto,
-  CreateNoteDto,
-  IdDto,
-  FilterPaginationDto,
-} from 'dto';
+import { NameDto, NoteDto, IdDto, FilterPaginationDto } from 'dto';
 import {
   BASE_NOTES_URLS,
   CONTENT_TYPE,
@@ -41,58 +36,43 @@ export class NotesController {
 
     return response
       .setHeader(CONTENT_TYPE, CONTENT_TYPE_HTML)
-      .status(HttpStatus.OK)
       .send(responseMessage);
   }
 
   @Roles(ROLES.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(BASE_NOTES_URLS.NOTES)
-  async getNotes(
-    @Query() parameters: FilterPaginationDto,
-    @Res() response: Response,
-  ): Promise<Response> {
+  async getNotes(@Query() parameters: FilterPaginationDto) {
     const notes = await this.notesService.getNotes(parameters);
 
-    return response.send(notes);
+    return notes;
   }
 
   @Roles(ROLES.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
+  @HttpCode(HttpStatus.CREATED)
   @Post(BASE_NOTES_URLS.NOTES)
-  async insertNote(
-    @Body() note: CreateNoteDto,
-    @Res() response: Response,
-  ): Promise<Response> {
+  async createNote(@Body() note: NoteDto) {
     const createdNote = await this.notesService.createNote(note);
 
-    return response.status(HttpStatus.OK).send(createdNote);
+    return createdNote;
   }
 
   @Roles(ROLES.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Put(BASE_NOTES_URLS.NOTES_BY_ID)
-  async updateNote(
-    @Param() { id }: IdDto,
-    @Body() note: UpdateNoteDto,
-    @Res()
-    response: Response,
-  ): Promise<Response> {
+  async updateNote(@Param() { id }: IdDto, @Body() note: NoteDto) {
     const updatedNote = await this.notesService.updateNote(note, id);
 
-    return response.status(HttpStatus.OK).send(updatedNote);
+    return updatedNote;
   }
 
   @Roles(ROLES.USER)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(BASE_NOTES_URLS.NOTES_BY_ID)
-  async removeNote(
-    @Param() { id }: IdDto,
-    @Res()
-    response: Response,
-  ): Promise<Response> {
-    const deletedNoteResponse = await this.notesService.removeNote(id);
+  async deleteNote(@Param() { id }: IdDto) {
+    const deletedNoteResponse = await this.notesService.deleteNote(id);
 
-    return response.status(HttpStatus.OK).send(deletedNoteResponse);
+    return deletedNoteResponse;
   }
 }

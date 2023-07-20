@@ -1,4 +1,4 @@
-export const enum ENV {
+export const enum ENV_VARIABLE_NAMES {
   DATABASE_URL = 'DATABASE_URL',
   ACCESS_JWT_SECRET = 'ACCESS_JWT_SECRET',
   REFRESH_JWT_SECRET = 'REFRESH_JWT_SECRET',
@@ -7,3 +7,4 @@ export const enum ENV {
   TEST = 'TEST',
   DEV = 'DEV',
 }
+export const PORT = 3000;

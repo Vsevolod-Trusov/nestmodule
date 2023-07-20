@@ -7,30 +7,37 @@ import { ConfigService } from '@nestjs/config';
 import { FilterQuery } from 'mongoose';
 import { escapeRegExp } from 'lodash';
 
-import { UpdateNoteDto, CreateNoteDto, FilterPaginationDto } from 'dto';
+import { NoteDto, FilterPaginationDto } from 'dto';
 import {
   DEFAULT_LIMIT_VALUE,
-  ENV,
+  ENV_VARIABLE_NAMES,
   RESPONSE_ERROR_MESSAGES,
   DEFAULT_PAGE_VALUE,
 } from 'common';
 import { DataService, IRemovedNote } from 'types';
-import { Note } from 'entity';
-import { checkIsEven, concatStrings, getCurrentDate } from 'utils';
+import { Note } from 'notes/entities';
+import {
+  checkIsEven,
+  concatStrings,
+  getCurrentDate,
+  getHelloByName,
+} from 'utils';
 
 @Injectable()
 export class NotesService {
-  readonly TEST_PREFIX = this.configService.get<string>(ENV.TEST);
-  readonly DEV_PREFIX = this.configService.get<string>(ENV.DEV);
+  readonly TEST_PREFIX = this.configService.get<string>(
+    ENV_VARIABLE_NAMES.TEST,
+  );
+  readonly DEV_PREFIX = this.configService.get<string>(ENV_VARIABLE_NAMES.DEV);
 
   constructor(
     private readonly dataService: DataService,
-    private configService: ConfigService,
+    private readonly configService: ConfigService,
   ) {}
 
   getHelloWithName(name: string): string {
     if (name) {
-      return `<h4>Hello ${name}</h4>`;
+      return getHelloByName(name);
     } else {
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_NAME_ERROR);
     }
@@ -57,38 +64,35 @@ export class NotesService {
     return notes;
   }
 
-  async createNote(note: CreateNoteDto): Promise<Note> {
+  async createNote(note: NoteDto): Promise<Note> {
     const notesCount = await this.dataService.notes.countItems();
 
     const isEven = checkIsEven(notesCount);
-    const { updatedAt, ...creatingNote } = note;
-    const { title } = creatingNote;
+    const { title } = note;
 
-    creatingNote.title = isEven
+    note.title = isEven
       ? concatStrings(this.TEST_PREFIX, title)
       : concatStrings(this.DEV_PREFIX, title);
 
     const creationDate = getCurrentDate();
 
     return await this.dataService.notes.create({
-      ...creatingNote,
+      ...note,
       createdAt: creationDate,
     });
   }
 
   async updateNote(
-    updatedNote: UpdateNoteDto,
+    updatedNote: NoteDto,
     id: string,
   ): Promise<Note | NotFoundException> {
     if (id !== updatedNote.id)
       throw new BadRequestException(RESPONSE_ERROR_MESSAGES.ID_NOT_EQUALS);
 
-    const { createdAt, ...note } = updatedNote;
-
     const updatedDate = getCurrentDate();
 
     const updated = await this.dataService.notes.updateById(id, {
-      ...note,
+      ...updatedNote,
       updatedAt: updatedDate,
     });
 
@@ -97,12 +101,20 @@ export class NotesService {
     );
   }
 
-  async removeNote(id: string): Promise<IRemovedNote> {
-    const deletedResult = await this.dataService.notes.deleteOneById(id);
+  async deleteNote(id: string): Promise<IRemovedNote> {
+    const note = await this.dataService.notes.findById(id);
+
+    if (note.isDeleted)
+      throw new BadRequestException(RESPONSE_ERROR_MESSAGES.SUCH_NOTE_DELETED);
+
+    const softDeletedResult = await this.dataService.notes.deleteOneById(
+      id,
+      note,
+    );
 
     return {
       id: id,
-      success: !!deletedResult.deletedCount,
+      success: !!softDeletedResult.isDeleted,
     };
   }
 }

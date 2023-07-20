@@ -17,6 +17,7 @@ import {
   PASSWORD_MAX_LENGTH,
   ROLES,
 } from 'common';
+import { transformToDate } from 'utils';
 
 export class CreateUserDto {
   @IsOptional()
@@ -34,7 +35,7 @@ export class CreateUserDto {
   password: string;
 
   @IsDate()
-  @Transform(({ value }: TransformFnParams) => new Date(value))
+  @Transform(transformToDate)
   @MinDate(new Date(MIN_DATE_VALUE))
   birthday: Date;
 

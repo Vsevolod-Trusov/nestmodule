@@ -8,18 +8,19 @@ import {
   MinDate,
 } from 'class-validator';
 import { MIN_DATE_VALUE, TASK_MIN_LENGTH } from 'common';
+import { transformToDate, transformToNumber } from 'utils';
 
 export class FilterPaginationDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  @Transform(({ value }: TransformFnParams) => parseInt(value, 10))
+  @Transform(transformToNumber)
   page: number;
 
   @IsOptional()
   @IsInt()
   @IsPositive()
-  @Transform(({ value }: TransformFnParams) => parseInt(value, 10))
+  @Transform(transformToNumber)
   limit: number;
 
   @IsOptional()
@@ -28,7 +29,7 @@ export class FilterPaginationDto {
 
   @IsOptional()
   @IsDate()
-  @Transform(({ value }: TransformFnParams) => new Date(value))
+  @Transform(transformToDate)
   @MinDate(new Date(MIN_DATE_VALUE))
   date: Date;
 }

@@ -32,6 +32,12 @@ export class Note {
 
   @Prop({ required: false, type: Date })
   updatedAt?: Date;
+
+  @Prop({ required: false, type: Boolean })
+  isDeleted?: boolean;
+
+  @Prop({ required: false, type: Date })
+  deletedAt?: Date;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

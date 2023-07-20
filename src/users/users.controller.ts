@@ -15,7 +15,7 @@ import {
   REFRESH_FIELD,
   ROLES,
   SUB_FIELD,
-  SUCCASSFULLY_LOGOUT,
+  SUCCESSFULLY_LOGOUT,
   URL_PREFIX,
 } from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
@@ -42,7 +42,7 @@ export class UsersController {
   @Get(BASE_USER_URLS.LOG_OUT)
   logout(@Res() response: Response): Response {
     response.clearCookie(COOKIES_HEADERS.REFRESH);
-    return response.send(SUCCASSFULLY_LOGOUT);
+    return response.send(SUCCESSFULLY_LOGOUT);
   }
 
   @Roles(ROLES.USER)

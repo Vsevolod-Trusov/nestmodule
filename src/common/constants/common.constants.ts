@@ -7,7 +7,7 @@ export const DATABASE_READY_STATE = 1;
 export const MIN_DATE_VALUE = '1970-01-01';
 export const ROUNDS_AMOUNT = 10;
 export const NULL_VALUE = null;
-export const DEVIDE_BASE = 2;
+export const DIVIDE_BASE = 2;
 export const ZERO_VALUE = 0;
 export const EMAIL_FIELD = 'email';
 export const SUB_FIELD = 'sub';
@@ -19,7 +19,8 @@ export const ENV_PATH = '.env';
 export enum ROLES {
   USER = 'user',
 }
-export const SUCCASSFULLY_LOGOUT = 'Log out successfully';
+export const SUCCESSFULLY_LOGOUT = 'Log out successfully';
 export enum COOKIES_HEADERS {
   REFRESH = 'refreshToken',
 }
+export const NUMBER_BASE = 10;

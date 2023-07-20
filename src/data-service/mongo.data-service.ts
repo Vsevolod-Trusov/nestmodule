@@ -2,7 +2,9 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Note, NoteDocument, User, UserDocument } from 'entity';
+import { User, UserDocument } from 'users/entities';
+import { Note, NoteDocument } from 'notes/entities';
+
 import { NoteRepository, UserRepository } from 'repository';
 import { DataService } from 'types';
 
