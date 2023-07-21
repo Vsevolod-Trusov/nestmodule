@@ -70,7 +70,7 @@ export class AuthService {
     return tokens;
   }
 
-  async refreshTokens(userId: string, refreshToken: string) {
+  async refreshTokens(userId: string) {
     const user = await this.dataService.users.findOneById(userId);
 
     if (!user)

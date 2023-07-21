@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model, FilterQuery } from 'mongoose';
+import { Model, FilterQuery, Schema as MongooseSchema } from 'mongoose';
 
 import { GenericRepository } from 'types';
 import { getSkipValue } from 'utils';

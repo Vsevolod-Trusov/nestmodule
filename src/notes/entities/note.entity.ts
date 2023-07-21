@@ -40,7 +40,7 @@ export class Note {
   deletedAt?: Date;
 
   @Prop({ required: true, validate: EMAIL_VALIDATE_MASK })
-  author: string;
+  author?: string;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

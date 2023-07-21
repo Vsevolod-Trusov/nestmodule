@@ -1,12 +1,14 @@
-import { Transform, TransformFnParams } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import {
   IsDate,
+  IsEmail,
   IsInt,
   IsOptional,
   IsPositive,
   Length,
   MinDate,
 } from 'class-validator';
+
 import { MIN_DATE_VALUE, TASK_MIN_LENGTH } from 'common';
 import { transformToDate, transformToNumber } from 'utils';
 
@@ -32,4 +34,8 @@ export class FilterPaginationDto {
   @Transform(transformToDate)
   @MinDate(new Date(MIN_DATE_VALUE))
   date: Date;
+
+  @IsOptional()
+  @IsEmail()
+  email: string;
 }

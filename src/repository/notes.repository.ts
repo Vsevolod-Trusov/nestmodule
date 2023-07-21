@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { FilterQuery, Model, Schema as MongooseSchema } from 'mongoose';
 
 import { Note } from 'notes/entities';
 import { MongoGenericRepository } from 'repository';
+import { getSkipValue } from 'utils';
 
 @Injectable()
 export class NoteRepository extends MongoGenericRepository<Note> {
-  constructor(notesRepository: Model<Note>) {
+  constructor(private readonly notesRepository: Model<Note>) {
     super(notesRepository);
   }
 
@@ -20,5 +21,24 @@ export class NoteRepository extends MongoGenericRepository<Note> {
 
   async deleteOneById(id: string, note: Note) {
     return await this.update({ id: id }, note);
+  }
+
+  async findByFilterUsingPaginationAndPopulate(
+    filter: FilterQuery<Note>,
+    page: number,
+    limit: number,
+    _id: MongooseSchema.Types.ObjectId,
+  ) {
+    const skip = getSkipValue(page, limit);
+
+    return await this.notesRepository
+      .find({ ...filter, author: _id })
+      .populate({
+        path: 'author',
+        match: { _id: { $eq: _id } },
+      })
+      .limit(limit)
+      .skip(skip)
+      .exec();
   }
 }

@@ -54,8 +54,11 @@ export class NotesController {
     RoleGuard,
   )
   @Get(BASE_NOTES_URLS.NOTES)
-  async getNotes(@Query() parameters: FilterPaginationDto) {
-    const notes = await this.notesService.getNotes(parameters);
+  async getNotes(
+    @Query() parameters: FilterPaginationDto,
+    @GetUserPayload() { email },
+  ) {
+    const notes = await this.notesService.getNotes({ ...parameters, email });
 
     return notes;
   }

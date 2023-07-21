@@ -48,12 +48,14 @@ export class NotesService {
     limit = DEFAULT_LIMIT_VALUE,
     name,
     date,
+    email,
   }: FilterPaginationDto): Promise<Note[]> {
     const titleExpression = new RegExp(escapeRegExp(name), 'i');
     const filterQuery: FilterQuery<Note> = {
       ...(name && { title: titleExpression }),
       ...(date && { createdAt: date }),
       isDeleted: false,
+      author: email,
     };
 
     const notes = await this.dataService.notes.findByFilterUsingPagination(

@@ -13,8 +13,4 @@ export class NoteDto {
 
   @Length(TASK_MIN_LENGTH, TASK_MAX_LENGTH)
   content: string;
-
-  @IsOptional()
-  @IsEmail()
-  author: string;
 }

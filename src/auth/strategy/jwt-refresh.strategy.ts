@@ -44,7 +44,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
     const { sub, email, role } = payload;
     const { res: response } = request;
 
-    const tokens = await this.authService.getTokens(sub, email, role);
+    const tokens = await this.authService.refreshTokens(sub);
 
     response.cookie(COOKIES_HEADERS.REFRESH, tokens.refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
