@@ -29,3 +29,4 @@ export enum COOKIES_HEADERS {
 export const NUMBER_BASE = 10;
 export const EXPIRED_REFRESH_COOKIE_MAX_AGE = 1 * 20 * 60 * 60 * 1000;
 export const EXPIRED_ACCESS_COOKIE_MAX_AGE = 1 * 1 * 60 * 60 * 1000;
+export const POPULATE_FIELD = 'author';

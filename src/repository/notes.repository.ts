@@ -4,6 +4,7 @@ import { FilterQuery, Model, Schema as MongooseSchema } from 'mongoose';
 import { Note } from 'notes/entities';
 import { MongoGenericRepository } from 'repository';
 import { getSkipValue } from 'utils';
+import { POPULATE_FIELD } from 'common';
 
 @Injectable()
 export class NoteRepository extends MongoGenericRepository<Note> {
@@ -34,7 +35,7 @@ export class NoteRepository extends MongoGenericRepository<Note> {
     return await this.notesRepository
       .find({ ...filter, author: _id })
       .populate({
-        path: 'author',
+        path: POPULATE_FIELD,
         match: { _id: { $eq: _id } },
       })
       .limit(limit)

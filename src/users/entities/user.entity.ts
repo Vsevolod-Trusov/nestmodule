@@ -20,9 +20,6 @@ export type UserDocument = User & Document;
   },
 })
 export class User {
-  @Prop({ type: MongooseSchema.Types.ObjectId, auto: true })
-  _id?: MongooseSchema.Types.ObjectId;
-
   @Prop({ type: String, default: () => uuidv4(), unique: true })
   id: string;
 
