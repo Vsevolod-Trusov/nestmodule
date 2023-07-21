@@ -19,9 +19,6 @@ export class NoteRepository extends MongoGenericRepository<Note> {
   }
 
   async deleteOneById(id: string, note: Note) {
-    return await this.update(
-      { id: id },
-      { ...note, isDeleted: true, deletedAt: new Date() },
-    );
+    return await this.update({ id: id }, note);
   }
 }

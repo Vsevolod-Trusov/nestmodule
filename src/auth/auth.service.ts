@@ -34,7 +34,7 @@ export class AuthService {
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
-    const { id, email, password, role } = createUserDto;
+    const { id, email, password } = createUserDto;
     const userId = id || uuidv4();
     createUserDto.id = userId;
     const user = await this.dataService.users.findOneByEmail(email);
@@ -44,13 +44,12 @@ export class AuthService {
     }
 
     const hash: string = await hashData(password, ROUNDS_AMOUNT);
-    await this.dataService.users.create({
+    const createdUser = await this.dataService.users.create({
       ...createUserDto,
       password: hash,
     });
-    const tokens = await this.getTokens(userId, email, role);
 
-    return tokens;
+    return createdUser;
   }
 
   async signIn(data: AuthDto) {

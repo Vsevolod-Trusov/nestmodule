@@ -20,7 +20,12 @@ export enum ROLES {
   USER = 'user',
 }
 export const SUCCESSFULLY_LOGOUT = 'Log out successfully';
+export const SUCCESS_SIGN_IN = 'Sign in successfully';
+export const SUCCESS_SIGN_UP = 'Sign up successfully';
 export enum COOKIES_HEADERS {
   REFRESH = 'refreshToken',
+  ACCESS = 'accessToken',
 }
 export const NUMBER_BASE = 10;
+export const EXPIRED_REFRESH_COOKIE_MAX_AGE = 1 * 20 * 60 * 60 * 1000;
+export const EXPIRED_ACCESS_COOKIE_MAX_AGE = 1 * 1 * 60 * 60 * 1000;

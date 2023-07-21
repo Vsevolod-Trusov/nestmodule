@@ -1,5 +1,6 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 import { AllExceptionsFilter } from 'middleware/errors.middleware';
 import { PORT } from 'common';
@@ -11,6 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.use(cookieParser());
   await app.listen(process.env.PORT || PORT);
 }
 bootstrap();

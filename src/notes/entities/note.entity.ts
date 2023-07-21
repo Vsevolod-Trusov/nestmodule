@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TASK_MAX_LENGTH, TASK_MIN_LENGTH } from 'common';
+import { EMAIL_VALIDATE_MASK, TASK_MAX_LENGTH, TASK_MIN_LENGTH } from 'common';
 
 export type NoteDocument = Note & Document;
 
@@ -38,6 +38,9 @@ export class Note {
 
   @Prop({ required: false, type: Date })
   deletedAt?: Date;
+
+  @Prop({ required: true, validate: EMAIL_VALIDATE_MASK })
+  author: string;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);
