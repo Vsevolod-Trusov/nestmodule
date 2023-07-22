@@ -13,6 +13,7 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.use(cookieParser());
+  app.enableCors();
   await app.listen(process.env.PORT || PORT);
 }
 bootstrap();

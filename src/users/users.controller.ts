@@ -39,7 +39,7 @@ export class UsersController {
 
   @Post(BASE_USER_URLS.SIGN_IN)
   async signIn(@Body() authDate: AuthDto, @Res() response: Response) {
-    const { accessToken, refreshToken } = await this.authService.signIn(
+    const { user, accessToken, refreshToken } = await this.authService.signIn(
       authDate,
     );
 
@@ -53,7 +53,7 @@ export class UsersController {
       httpOnly: true,
     });
 
-    return response.send(SUCCESS_SIGN_IN);
+    return response.send(user);
   }
 
   @Roles(ROLES.USER)
