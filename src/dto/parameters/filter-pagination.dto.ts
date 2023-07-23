@@ -1,5 +1,6 @@
-import { Transform } from 'class-transformer';
+import { Transform, TransformFnParams } from 'class-transformer';
 import {
+  IsBoolean,
   IsDate,
   IsEmail,
   IsInt,
@@ -27,13 +28,18 @@ export class FilterPaginationDto {
 
   @IsOptional()
   @Length(TASK_MIN_LENGTH)
-  name: string;
+  title: string;
 
   @IsOptional()
   @IsDate()
   @Transform(transformToDate)
   @MinDate(new Date(MIN_DATE_VALUE))
   date: Date;
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }: TransformFnParams) => !!value)
+  isShared: boolean;
 
   @IsOptional()
   @IsEmail()

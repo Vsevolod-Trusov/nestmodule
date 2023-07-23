@@ -25,10 +25,10 @@ export class Note {
     minlength: TASK_MIN_LENGTH,
     maxlength: TASK_MAX_LENGTH,
   })
-  content: string;
+  description: string;
 
   @Prop({ required: true, type: Date })
-  createdAt?: Date;
+  dateCreation?: Date;
 
   @Prop({ required: false, type: Date })
   updatedAt?: Date;
@@ -41,6 +41,9 @@ export class Note {
 
   @Prop({ required: true, validate: EMAIL_VALIDATE_MASK })
   author?: string;
+
+  @Prop({ required: true, type: Boolean, default: false })
+  isShared?: boolean;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

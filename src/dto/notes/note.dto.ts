@@ -1,4 +1,4 @@
-import { IsOptional, Length, IsUUID, IsEmail } from 'class-validator';
+import { IsOptional, Length, IsUUID, IsBoolean } from 'class-validator';
 
 import { TASK_MAX_LENGTH, TASK_MIN_LENGTH, UUID_LENGTH } from 'common';
 
@@ -8,9 +8,15 @@ export class NoteDto {
   @IsUUID()
   id: string;
 
+  @IsOptional()
   @Length(TASK_MIN_LENGTH)
   title: string;
 
+  @IsOptional()
   @Length(TASK_MIN_LENGTH, TASK_MAX_LENGTH)
-  content: string;
+  description: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isShared: boolean;
 }

@@ -46,16 +46,23 @@ export class NotesService {
   async getNotes({
     page = DEFAULT_PAGE_VALUE,
     limit = DEFAULT_LIMIT_VALUE,
-    name,
+    title,
     date,
+    isShared,
     email,
   }: FilterPaginationDto): Promise<Note[]> {
-    const titleExpression = new RegExp(escapeRegExp(name), 'i');
+    const titleExpression = new RegExp(escapeRegExp(title), 'i');
     const filterQuery: FilterQuery<Note> = {
-      ...(name && { title: titleExpression }),
-      ...(date && { createdAt: date }),
-      isDeleted: false,
-      author: email,
+      ...(title && { title: titleExpression }),
+      ...(date && { dateCreation: date }),
+      ...(isShared
+        ? {
+            isShared: isShared,
+          }
+        : {
+            isDeleted: false,
+            author: email,
+          }),
     };
 
     const notes = await this.dataService.notes.findByFilterUsingPagination(
@@ -81,7 +88,7 @@ export class NotesService {
 
     return await this.dataService.notes.create({
       ...note,
-      createdAt: creationDate,
+      dateCreation: creationDate,
       isDeleted: false,
       author,
     });
@@ -91,9 +98,6 @@ export class NotesService {
     updatedNote: NoteDto,
     id: string,
   ): Promise<Note | NotFoundException> {
-    if (id !== updatedNote.id)
-      throw new BadRequestException(RESPONSE_ERROR_MESSAGES.ID_NOT_EQUALS);
-
     const note = await this.dataService.notes.findById(id);
 
     if (!note) throw new BadRequestException(RESPONSE_ERROR_MESSAGES.WRONG_ID);
