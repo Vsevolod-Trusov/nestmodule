@@ -16,4 +16,4 @@ export enum BASE_USER_URLS {
 export const ALL_ROUTES = '*';
 export const MIDDLEWARE_ROUTE = '/api/notes';
 
-export const ORIGINS = ['https://vsevolod-trusov.github.io/ReactModule'];
+export const ORIGINS = ['https://vsevolod-trusov.github.io'];
