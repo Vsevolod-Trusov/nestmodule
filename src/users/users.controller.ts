@@ -12,13 +12,12 @@ import { Response } from 'express';
 import {
   BASE_USER_URLS,
   COOKIES_HEADERS,
-  EXPIRED_REFRESH_COOKIE_MAX_AGE,
-  EXPIRED_ACCESS_COOKIE_MAX_AGE,
   ROLES,
   SUCCESSFULLY_LOGOUT,
   URL_PREFIX,
-  SUCCESS_SIGN_IN,
   STRATEGIES_NAMES,
+  REFRESH_TOKEN_HEADER,
+  ACCESS_TOKEN_HEADER,
 } from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
 import { AuthService } from 'auth/auth.service';
@@ -43,15 +42,8 @@ export class UsersController {
       authDate,
     );
 
-    response.cookie(COOKIES_HEADERS.REFRESH, refreshToken, {
-      maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
-      httpOnly: true,
-    });
-
-    response.cookie(COOKIES_HEADERS.ACCESS, accessToken, {
-      maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
-      httpOnly: true,
-    });
+    response.set(REFRESH_TOKEN_HEADER, refreshToken);
+    response.set(ACCESS_TOKEN_HEADER, accessToken);
 
     return response.send(user);
   }
@@ -63,8 +55,8 @@ export class UsersController {
   )
   @Get(BASE_USER_URLS.LOG_OUT)
   logout(@Res() response: Response): Response {
-    response.clearCookie(COOKIES_HEADERS.REFRESH);
-    response.clearCookie(COOKIES_HEADERS.ACCESS);
+    response.removeHeader(REFRESH_TOKEN_HEADER);
+    response.removeHeader(ACCESS_TOKEN_HEADER);
     return response.send(SUCCESSFULLY_LOGOUT);
   }
 }

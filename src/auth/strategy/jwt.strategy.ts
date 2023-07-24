@@ -4,7 +4,11 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 
-import { ENV_VARIABLE_NAMES, STRATEGIES_NAMES } from 'common';
+import {
+  ACCESS_TOKEN_HEADER,
+  ENV_VARIABLE_NAMES,
+  STRATEGIES_NAMES,
+} from 'common';
 import { JwtPayload } from 'types';
 
 @Injectable()
@@ -24,9 +28,7 @@ export class JwtStrategy extends PassportStrategy(
   }
 
   static extractAccessToken(request: Request) {
-    const cookies = request?.cookies;
-    const accessToken = cookies?.accessToken;
-    return accessToken;
+    return request?.header(ACCESS_TOKEN_HEADER);
   }
 
   async validate(payload: JwtPayload) {

@@ -5,10 +5,9 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request, Response } from 'express';
 
 import {
-  COOKIES_HEADERS,
+  ACCESS_TOKEN_HEADER,
   ENV_VARIABLE_NAMES,
-  EXPIRED_ACCESS_COOKIE_MAX_AGE,
-  EXPIRED_REFRESH_COOKIE_MAX_AGE,
+  REFRESH_TOKEN_HEADER,
   STRATEGIES_NAMES,
 } from 'common';
 import { JwtPayload } from 'types';
@@ -35,9 +34,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
   }
 
   static extractRefreshToken(request: Request) {
-    const cookies = request?.cookies;
-    const refreshToken = cookies?.refreshToken;
-    return refreshToken;
+    return request?.header(REFRESH_TOKEN_HEADER);
   }
 
   async validate(request: Request, payload: JwtPayload) {
@@ -46,15 +43,8 @@ export class RefreshJwtStrategy extends PassportStrategy(
 
     const tokens = await this.authService.refreshTokens(sub);
 
-    response.cookie(COOKIES_HEADERS.REFRESH, tokens.refreshToken, {
-      maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
-      httpOnly: true,
-    });
-
-    response.cookie(COOKIES_HEADERS.ACCESS, tokens.accessToken, {
-      maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
-      httpOnly: true,
-    });
+    response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);
+    response.set(ACCESS_TOKEN_HEADER, tokens.accessToken);
 
     return { sub, email, role };
   }
