@@ -7,7 +7,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 import {
   BASE_USER_URLS,
@@ -42,10 +42,7 @@ export class UsersController {
       authDate,
     );
 
-    response.set(REFRESH_TOKEN_HEADER, refreshToken);
-    response.set(ACCESS_TOKEN_HEADER, accessToken);
-
-    return response.send(user);
+    return response.send({ user, accessToken, refreshToken });
   }
 
   @Roles(ROLES.USER)

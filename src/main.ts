@@ -3,7 +3,13 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 
 import { AllExceptionsFilter } from 'middleware/errors.middleware';
-import { PORT, ORIGINS } from 'common';
+import {
+  PORT,
+  ORIGINS,
+  REFRESH_TOKEN_HEADER,
+  ACCESS_TOKEN_HEADER,
+  CONTENT_TYPE,
+} from 'common';
 
 import { AppModule } from './app.module';
 
@@ -15,7 +21,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: ORIGINS,
-    credentials: true,
+    allowedHeaders: [REFRESH_TOKEN_HEADER, ACCESS_TOKEN_HEADER, CONTENT_TYPE],
   });
   await app.listen(process.env.PORT || PORT);
 }
