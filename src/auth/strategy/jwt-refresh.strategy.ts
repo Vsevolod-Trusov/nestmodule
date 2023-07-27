@@ -52,12 +52,14 @@ export class RefreshJwtStrategy extends PassportStrategy(
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
+      secure: true,
     });
 
     response.cookie('refreshToken', tokens.refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
+      secure: true,
     });
 
     //response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);
