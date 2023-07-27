@@ -52,7 +52,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: 'vsevolod-trusov.github.io',
+      domain: 'https://vsevolod-trusov.github.io',
       path: '/',
     });
 
@@ -60,7 +60,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: 'vsevolod-trusov.github.io',
+      domain: 'https://vsevolod-trusov.github.io',
       path: '/',
     });
 
