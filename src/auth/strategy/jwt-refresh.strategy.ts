@@ -48,16 +48,20 @@ export class RefreshJwtStrategy extends PassportStrategy(
 
     const tokens = await this.authService.refreshTokens(sub);
 
-    response.cookie('accessToken', tokens.accessToken, {
+    response.cookie('accessToken', accessToken, {
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
-      path: '/api/',
+      sameSite: 'none',
+      domain: 'vsevolod-trusov.github.io',
+      path: '/',
     });
 
-    response.cookie('refreshToken', tokens.refreshToken, {
+    response.cookie('refreshToken', refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
-      path: '/api/',
+      sameSite: 'none',
+      domain: 'vsevolod-trusov.github.io',
+      path: '/',
     });
 
     //response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);

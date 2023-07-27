@@ -48,7 +48,7 @@ export class UsersController {
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: '.github.io',
+      domain: 'vsevolod-trusov.github.io',
       path: '/',
     });
 
@@ -56,7 +56,7 @@ export class UsersController {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: '.github.io',
+      domain: 'vsevolod-trusov.github.io',
       path: '/',
     });
 
