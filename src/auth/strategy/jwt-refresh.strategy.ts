@@ -53,6 +53,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
       httpOnly: true,
       sameSite: 'none',
       domain: 'https://vsevolod-trusov.github.io',
+      path: '/ReactModule/',
     });
 
     response.cookie('refreshToken', tokens.refreshToken, {
@@ -60,6 +61,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
       httpOnly: true,
       sameSite: 'none',
       domain: 'https://vsevolod-trusov.github.io',
+      path: '/ReactModule/',
     });
 
     //response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);

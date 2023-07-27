@@ -49,6 +49,7 @@ export class UsersController {
       httpOnly: true,
       sameSite: 'none',
       domain: 'https://vsevolod-trusov.github.io',
+      path: '/ReactModule/',
     });
 
     response.cookie('refreshToken', refreshToken, {
@@ -56,6 +57,7 @@ export class UsersController {
       httpOnly: true,
       sameSite: 'none',
       domain: 'https://vsevolod-trusov.github.io',
+      path: '/ReactModule/',
     });
 
     return response.send({ user, accessToken, refreshToken });
