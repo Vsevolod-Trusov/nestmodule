@@ -44,17 +44,18 @@ export class UsersController {
       authDate,
     );
 
-    // response.set(REFRESH_TOKEN_HEADER, refreshToken);
-    // response.set(ACCESS_TOKEN_HEADER, accessToken);
-
     response.cookie('accessToken', accessToken, {
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
+      sameSite: 'none',
+      secure: true,
     });
 
     response.cookie('refreshToken', refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
+      sameSite: 'none',
+      secure: true,
     });
 
     return response.send({ user });

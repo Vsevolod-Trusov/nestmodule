@@ -36,7 +36,6 @@ export class RefreshJwtStrategy extends PassportStrategy(
   }
 
   static extractRefreshToken(request: Request) {
-    //request?.header(REFRESH_TOKEN_HEADER);
     const cookies = request.cookies;
     const refreshToken = cookies.refreshToken;
     return refreshToken;
@@ -51,15 +50,16 @@ export class RefreshJwtStrategy extends PassportStrategy(
     response.cookie('accessToken', tokens.accessToken, {
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
+      sameSite: 'none',
+      secure: true,
     });
 
     response.cookie('refreshToken', tokens.refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
+      sameSite: 'none',
+      secure: true,
     });
-
-    //response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);
-    //response.set(ACCESS_TOKEN_HEADER, tokens.accessToken);
 
     return { sub, email, role };
   }
