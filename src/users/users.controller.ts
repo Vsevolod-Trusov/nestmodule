@@ -7,7 +7,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 
 import {
   BASE_USER_URLS,
@@ -18,8 +18,6 @@ import {
   STRATEGIES_NAMES,
   REFRESH_TOKEN_HEADER,
   ACCESS_TOKEN_HEADER,
-  EXPIRED_ACCESS_COOKIE_MAX_AGE,
-  EXPIRED_REFRESH_COOKIE_MAX_AGE,
 } from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
 import { AuthService } from 'auth/auth.service';
@@ -44,23 +42,10 @@ export class UsersController {
       authDate,
     );
 
-    response.cookie('accessToken', accessToken, {
-      maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
-      httpOnly: true,
-      sameSite: 'none',
-      domain: 'https://vsevolod-trusov.github.io/ReactModule',
-      path: '/',
-    });
+    response.set(REFRESH_TOKEN_HEADER, refreshToken);
+    response.set(ACCESS_TOKEN_HEADER, accessToken);
 
-    response.cookie('refreshToken', refreshToken, {
-      maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
-      httpOnly: true,
-      sameSite: 'none',
-      domain: 'https://vsevolod-trusov.github.io/ReactModule',
-      path: '/',
-    });
-
-    return response.send({ user, accessToken, refreshToken });
+    return response.send(user);
   }
 
   @Roles(ROLES.USER)
