@@ -48,12 +48,16 @@ export class UsersController {
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
+      domain: '.github.io',
+      path: '/',
     });
 
     response.cookie('refreshToken', refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
+      domain: '.github.io',
+      path: '/',
     });
 
     return response.send({ user, accessToken, refreshToken });
