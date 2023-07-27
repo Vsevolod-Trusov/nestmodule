@@ -48,16 +48,16 @@ export class UsersController {
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: 'https://vsevolod-trusov.github.io',
-      path: '/ReactModule/',
+      domain: 'https://vsevolod-trusov.github.io/ReactModule',
+      path: '/',
     });
 
     response.cookie('refreshToken', refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: 'https://vsevolod-trusov.github.io',
-      path: '/ReactModule/',
+      domain: 'https://vsevolod-trusov.github.io/ReactModule',
+      path: '/',
     });
 
     return response.send({ user, accessToken, refreshToken });

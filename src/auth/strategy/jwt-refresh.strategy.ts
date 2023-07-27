@@ -52,16 +52,16 @@ export class RefreshJwtStrategy extends PassportStrategy(
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: 'https://vsevolod-trusov.github.io',
-      path: '/ReactModule/',
+      domain: 'https://vsevolod-trusov.github.io/ReactModule',
+      path: '/',
     });
 
     response.cookie('refreshToken', tokens.refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
       sameSite: 'none',
-      domain: 'https://vsevolod-trusov.github.io',
-      path: '/ReactModule/',
+      domain: 'https://vsevolod-trusov.github.io/ReactModule',
+      path: '/',
     });
 
     //response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);
