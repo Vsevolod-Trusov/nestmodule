@@ -20,8 +20,9 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.use(cookieParser());
   app.enableCors({
-    origin: ORIGINS,
+    origin: ORIGINS, //'http://localhost:3000', //
     allowedHeaders: [REFRESH_TOKEN_HEADER, ACCESS_TOKEN_HEADER, CONTENT_TYPE],
+    credentials: true,
   });
   await app.listen(process.env.PORT || PORT);
 }

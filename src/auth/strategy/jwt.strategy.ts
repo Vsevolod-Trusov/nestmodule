@@ -28,7 +28,10 @@ export class JwtStrategy extends PassportStrategy(
   }
 
   static extractAccessToken(request: Request) {
-    return request?.header(ACCESS_TOKEN_HEADER);
+    //request?.header(ACCESS_TOKEN_HEADER);
+    const cookies = request?.cookies;
+    const accessToken = cookies.accessToken;
+    return accessToken;
   }
 
   async validate(payload: JwtPayload) {

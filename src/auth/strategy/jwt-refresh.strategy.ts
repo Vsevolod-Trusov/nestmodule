@@ -7,6 +7,8 @@ import { Request, Response } from 'express';
 import {
   ACCESS_TOKEN_HEADER,
   ENV_VARIABLE_NAMES,
+  EXPIRED_ACCESS_COOKIE_MAX_AGE,
+  EXPIRED_REFRESH_COOKIE_MAX_AGE,
   REFRESH_TOKEN_HEADER,
   STRATEGIES_NAMES,
 } from 'common';
@@ -34,7 +36,10 @@ export class RefreshJwtStrategy extends PassportStrategy(
   }
 
   static extractRefreshToken(request: Request) {
-    return request?.header(REFRESH_TOKEN_HEADER);
+    //request?.header(REFRESH_TOKEN_HEADER);
+    const cookies = request.cookies;
+    const refreshToken = cookies.refreshToken;
+    return refreshToken;
   }
 
   async validate(request: Request, payload: JwtPayload) {
@@ -43,8 +48,20 @@ export class RefreshJwtStrategy extends PassportStrategy(
 
     const tokens = await this.authService.refreshTokens(sub);
 
-    response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);
-    response.set(ACCESS_TOKEN_HEADER, tokens.accessToken);
+    response.cookie('accessToken', tokens.accessToken, {
+      maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
+      httpOnly: true,
+      path: '/api/',
+    });
+
+    response.cookie('refreshToken', tokens.refreshToken, {
+      maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
+      httpOnly: true,
+      path: '/api/',
+    });
+
+    //response.set(REFRESH_TOKEN_HEADER, tokens.refreshToken);
+    //response.set(ACCESS_TOKEN_HEADER, tokens.accessToken);
 
     return { sub, email, role };
   }

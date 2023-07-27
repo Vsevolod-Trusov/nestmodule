@@ -18,6 +18,8 @@ import {
   STRATEGIES_NAMES,
   REFRESH_TOKEN_HEADER,
   ACCESS_TOKEN_HEADER,
+  EXPIRED_ACCESS_COOKIE_MAX_AGE,
+  EXPIRED_REFRESH_COOKIE_MAX_AGE,
 } from 'common';
 import { AuthDto, CreateUserDto } from 'dto';
 import { AuthService } from 'auth/auth.service';
@@ -41,6 +43,16 @@ export class UsersController {
     const { user, accessToken, refreshToken } = await this.authService.signIn(
       authDate,
     );
+
+    response.cookie('accessToken', accessToken, {
+      maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
+      httpOnly: true,
+    });
+
+    response.cookie('refreshToken', refreshToken, {
+      maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
+      httpOnly: true,
+    });
 
     return response.send({ user, accessToken, refreshToken });
   }
