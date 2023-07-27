@@ -48,12 +48,14 @@ export class UsersController {
       maxAge: EXPIRED_ACCESS_COOKIE_MAX_AGE,
       httpOnly: true,
       path: '/',
+      sameSite: 'none',
     });
 
     response.cookie('refreshToken', refreshToken, {
       maxAge: EXPIRED_REFRESH_COOKIE_MAX_AGE,
       httpOnly: true,
       path: '/',
+      sameSite: 'none',
     });
 
     return response.send({ user, accessToken, refreshToken });
